@@ -4,7 +4,7 @@
         version="0.1.2">
 
   <name>Firebase Plugin</name>
-  <description>Cordova plugin for Google Firebase.</description>
+  <description>Cordova plugin for Google Firebase Core</description>
   <author>Joshua McFarland</author>
   <license>MIT</license>
   <keywords>cordova,google,firebase</keywords>
@@ -20,7 +20,7 @@
   </js-module>
 
   <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
-  <dependency id="cordova-plugin-google-services" version="1.0.4" />
+  <dependency id="cordova-plugin-google-services" version="1.0.5" />
 
   <platform name="android">
 
