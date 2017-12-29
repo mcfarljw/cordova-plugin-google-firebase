@@ -26,7 +26,7 @@
 
     <config-file target="config.xml" parent="/*">
       <feature name="FirebaseCorePlugin" >
-        <param name="android-package" value="com.cordova.plugins.firebase.FirebaseCorePlugin" />
+        <param name="android-package" value="com.jernung.plugins.firebase.FirebaseCorePlugin" />
         <param name="onload" value="true" />
       </feature>
     </config-file>
