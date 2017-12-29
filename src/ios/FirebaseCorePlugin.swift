@@ -4,7 +4,7 @@ import Firebase
 class FirebaseCorePlugin : CDVPlugin {
 
   @objc(pluginInitialize)
-  func pluginInitialize() {
+  override func pluginInitialize() {
     if (FirebaseApp.app() == nil) {
       FirebaseApp.configure()
     }
