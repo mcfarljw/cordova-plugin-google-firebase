@@ -7,9 +7,9 @@ import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class FirebasePlugin extends CordovaPlugin {
+public class FirebaseCorePlugin extends CordovaPlugin {
 
-    private static final String PLUGIN_NAME = "FirebasePlugin";
+    private static final String PLUGIN_NAME = "FirebaseCorePlugin";
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {

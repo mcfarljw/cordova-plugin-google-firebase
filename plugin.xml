@@ -15,7 +15,7 @@
     <engine name="cordova-ios" version=">=4.3.0" />
   </engines>
 
-  <js-module src="www/firebase.js" name="FirebasePlugin">
+  <js-module src="www/firebase.js" name="FirebaseCorePlugin">
     <clobbers target="plugins.firebase" />
   </js-module>
 
@@ -25,8 +25,8 @@
   <platform name="android">
 
     <config-file target="config.xml" parent="/*">
-      <feature name="FirebasePlugin" >
-        <param name="android-package" value="com.cordova.plugins.firebase.FirebasePlugin" />
+      <feature name="FirebaseCorePlugin" >
+        <param name="android-package" value="com.cordova.plugins.firebase.FirebaseCorePlugin" />
         <param name="onload" value="true" />
       </feature>
     </config-file>
@@ -37,7 +37,7 @@
 
     <framework src="com.google.firebase:firebase-core:11.8.0" />
 
-    <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
+    <source-file src="src/android/FirebaseCorePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
 
   </platform>
@@ -45,15 +45,15 @@
   <platform name="ios">
 
     <config-file target="config.xml" parent="/*">
-			<feature name="FirebasePlugin">
-				<param name="ios-package" value="FirebasePlugin" />
+			<feature name="FirebaseCorePlugin">
+				<param name="ios-package" value="FirebaseCorePlugin" />
 				<param name="onload" value="true" />
 			</feature>
 		</config-file>
 
     <framework src="Firebase/Core" type="podspec" spec="~> 4.8.0"/>
 
-    <source-file src="src/ios/FirebasePlugin.swift" />
+    <source-file src="src/ios/FirebaseCorePlugin.swift" />
 
   </platform>
 
