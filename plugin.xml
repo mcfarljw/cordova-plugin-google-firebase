@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-google-firebase"
+        version="0.1.0">
+
+  <name>Firebase Plugin</name>
+  <description>Cordova plugin for Google Firebase.</description>
+  <author>Joshua McFarland</author>
+  <license>MIT</license>
+  <keywords>cordova,google,firebase</keywords>
+
+  <engines>
+    <engine name="cordova" version=">=6.4.0" />
+    <engine name="cordova-android" version=">=6.3.0" />
+    <engine name="cordova-ios" version=">=4.3.0" />
+  </engines>
+
+  <js-module src="www/firebase.js" name="FirebasePlugin">
+    <clobbers target="plugins.firebase" />
+  </js-module>
+
+  <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
+  <dependency id="cordova-plugin-google-services" version="1.0.4" />
+
+  <platform name="android">
+
+    <config-file target="config.xml" parent="/*">
+      <feature name="FirebasePlugin" >
+        <param name="android-package" value="com.cordova.plugins.firebase.FirebasePlugin" />
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.INTERNET" />
+    </config-file>
+
+    <framework src="com.google.firebase:firebase-core:11.8.0" />
+
+    <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
+    <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
+
+  </platform>
+
+  <platform name="ios">
+
+    <config-file target="config.xml" parent="/*">
+			<feature name="FirebasePlugin">
+				<param name="ios-package" value="FirebasePlugin" />
+				<param name="onload" value="true" />
+			</feature>
+		</config-file>
+
+    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.0"/>
+
+    <source-file src="src/ios/FirebasePlugin.swift" />
+
+  </platform>
+
+</plugin>
