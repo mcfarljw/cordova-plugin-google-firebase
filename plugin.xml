@@ -20,6 +20,7 @@
   </js-module>
 
   <dependency id="cordova-plugin-add-swift-support" version="1.7.1"/>
+  <dependency id="cordova-plugin-android-support-gradle-release" version="1.2.1" />
   <dependency id="cordova-plugin-google-services" version="1.2.1" />
 
   <platform name="android">
