@@ -52,7 +52,7 @@
 			</feature>
 		</config-file>
 
-    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.2"/>
+    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1"/>
 
     <source-file src="src/ios/FirebaseCorePlugin.swift" />
 
