@@ -1,7 +1,7 @@
 import Firebase
 
-@objc(FirebaseCorePlugin)
-class FirebaseCorePlugin : CDVPlugin {
+@objc(FirebasePlugin)
+class FirebasePlugin : CDVPlugin {
 
   @objc(pluginInitialize)
   override func pluginInitialize() {

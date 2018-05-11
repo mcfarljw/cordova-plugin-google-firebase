@@ -4,7 +4,7 @@
         version="0.5.1">
 
   <name>Firebase Plugin</name>
-  <description>Cordova plugin for Google Firebase Core</description>
+  <description>Cordova plugin for Google Firebase</description>
   <author>Joshua McFarland</author>
   <license>MIT</license>
   <keywords>cordova,google,firebase</keywords>
@@ -15,7 +15,7 @@
     <engine name="cordova-ios" version=">=4.3.0" />
   </engines>
 
-  <js-module src="www/firebase.js" name="FirebaseCorePlugin">
+  <js-module src="www/firebase.js" name="FirebasePlugin">
     <clobbers target="plugins.firebase" />
   </js-module>
 
@@ -26,8 +26,8 @@
   <platform name="android">
 
     <config-file target="config.xml" parent="/*">
-      <feature name="FirebaseCorePlugin" >
-        <param name="android-package" value="com.jernung.plugins.firebase.FirebaseCorePlugin" />
+      <feature name="FirebasePlugin" >
+        <param name="android-package" value="com.jernung.plugins.firebase.FirebasePlugin" />
         <param name="onload" value="true" />
       </feature>
     </config-file>
@@ -38,7 +38,7 @@
 
     <framework src="com.google.firebase:firebase-core:15.0.0" />
 
-    <source-file src="src/android/FirebaseCorePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
+    <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
 
   </platform>
@@ -46,15 +46,15 @@
   <platform name="ios">
 
     <config-file target="config.xml" parent="/*">
-			<feature name="FirebaseCorePlugin">
-				<param name="ios-package" value="FirebaseCorePlugin" />
+			<feature name="FirebasePlugin">
+				<param name="ios-package" value="FirebasePlugin" />
 				<param name="onload" value="true" />
 			</feature>
 		</config-file>
 
     <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1"/>
 
-    <source-file src="src/ios/FirebaseCorePlugin.swift" />
+    <source-file src="src/ios/FirebasePlugin.swift" />
 
   </platform>
 
