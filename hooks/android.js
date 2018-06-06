@@ -34,9 +34,9 @@ module.exports = function (context) {
     const googleServicesIndex = utils.getLineIndex(gradleFile, googleServicesRegex)
 
     if (googleServicesIndex > -1) {
-      gradleFile = gradleFile.replace(googleServicesRegex, 'com.google.gms:google-services:3.2.1')
+      gradleFile = gradleFile.replace(googleServicesRegex, 'com.google.gms:google-services:4.0.1')
     } else {
-      gradleFile = utils.insertLineAt(gradleFile, gradleBuildToolsIndex + 1, "\t\tclasspath 'com.google.gms:google-services:3.2.1'")
+      gradleFile = utils.insertLineAt(gradleFile, gradleBuildToolsIndex + 1, "\t\tclasspath 'com.google.gms:google-services:4.0.1'")
     }
 
     // apply google services plugin if missing
