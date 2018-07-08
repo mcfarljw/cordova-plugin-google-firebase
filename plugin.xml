@@ -37,7 +37,7 @@
     <hook type="after_prepare" src="hooks/android.js" />
 
     <framework src="com.google.firebase:firebase-ads:15.0.1" />
-    <framework src="com.google.firebase:firebase-core:15.0.2" />
+    <framework src="com.google.firebase:firebase-core:16.0.2" />
 
     <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
