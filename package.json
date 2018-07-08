@@ -28,9 +28,8 @@
     ]
   },
   "scripts": {
-    "refresh": "",
-    "test:android": "",
-    "test:ios": ""
+    "test:android": "node build/test-android",
+    "test:ios": "node build/test-ios"
   },
   "devDependencies": {
     "cordova": "^8.0.0",
