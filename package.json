@@ -27,7 +27,14 @@
       "ios"
     ]
   },
-  "dependencies": {
-    "fs-extra": "6.0.1"
+  "scripts": {
+    "refresh": "",
+    "test:android": "",
+    "test:ios": ""
+  },
+  "devDependencies": {
+    "cordova": "^8.0.0",
+    "fs-extra": "^6.0.1",
+    "shelljs": "^0.8.2"
   }
 }

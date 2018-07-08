@@ -1,3 +1,6 @@
+# Directories
+test/platforms
+
 # Files
 *.log
 *.project
