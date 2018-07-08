@@ -19,7 +19,7 @@
     <clobbers target="plugins.firebase" />
   </js-module>
 
-  <dependency id="cordova-plugin-add-swift-support" version="1.7.2"/>
+  <dependency id="cordova-plugin-add-swift-support" version="1.7.2" />
 
   <platform name="android">
 
@@ -56,8 +56,8 @@
     <hook type="after_prepare" src="hooks/ios.js" />
 
     <framework src="AdSupport.framework" />
-    <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1"/>
-    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1"/>
+    <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1" />
+    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1" />
 
     <source-file src="src/ios/FirebasePlugin.swift" />
 
