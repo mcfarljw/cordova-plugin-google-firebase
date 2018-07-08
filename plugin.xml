@@ -36,9 +36,8 @@
 
     <hook type="after_prepare" src="hooks/android.js" />
 
-    <framework src="com.android.support:appcompat-v7:27.1.1" />
-    <framework src="com.android.support:support-v4:27.1.1" />
-    <framework src="com.google.android.gms:play-services-tagmanager:15.0.2" />
+    <framework src="com.google.android.gms:play-services-analytics:16.0.1" />
+    <framework src="com.google.android.gms:play-services-tagmanager:16.0.1" />
     <framework src="com.google.firebase:firebase-ads:15.0.1" />
     <framework src="com.google.firebase:firebase-core:16.0.1" />
 
