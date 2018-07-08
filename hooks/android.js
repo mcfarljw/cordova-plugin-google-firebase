@@ -45,6 +45,12 @@ module.exports = function (context) {
       gradleFile = utils.appendLine(gradleFile, "apply plugin: 'com.google.gms.google-services'")
     }
 
+    // apply google services plugin if missing
+    const googleDisableVersionCheckIndex = utils.getLineIndex(gradleFile, "com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck")
+    if (googleDisableVersionCheckIndex === -1) {
+      gradleFile = utils.appendLine(gradleFile, "com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true")
+    }
+
     filesystem.writeFileSync(gradlePath, gradleFile, 'utf8')
   }
 }
