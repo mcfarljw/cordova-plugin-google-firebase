@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1059502715324",
+    "firebase_url": "https://testing-7ed2f.firebaseio.com",
+    "project_id": "testing-7ed2f",
+    "storage_bucket": "testing-7ed2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059502715324:android:80fd92315fbd03f3",
+        "android_client_info": {
+          "package_name": "com.jernung.testing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059502715324-lfs453p8dch4r197kh7t1uueboip0d72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEQajy8O4xn6iHnVsyQIB-YTwe3Vgr10E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
