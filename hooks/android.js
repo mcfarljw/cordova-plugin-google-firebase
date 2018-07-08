@@ -26,7 +26,7 @@ module.exports = function (context) {
     const gradleBuildToolsRegex = new RegExp(/com.android.tools.build:gradle:[0-9]+.[0-9]+.[0-9]+/)
     const gradleBuildToolsIndex = utils.getLineIndex(gradleFile, gradleBuildToolsRegex)
     if (gradleBuildToolsIndex > -1) {
-      gradleFile = gradleFile.replace(gradleBuildToolsRegex, 'com.android.tools.build:gradle:3.0.1')
+      gradleFile = gradleFile.replace(gradleBuildToolsRegex, 'com.android.tools.build:gradle:3.1.2')
     }
 
     // insert or update google services buildscript dependency
@@ -48,3 +48,5 @@ module.exports = function (context) {
     filesystem.writeFileSync(gradlePath, gradleFile, 'utf8')
   }
 }
+
+// com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
