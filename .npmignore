@@ -1,7 +1,10 @@
 # Directories
+build/
 node_modules/
 test/
 
 # Files
 *.log
 *.project
+google-services.json
+GoogleService-Info.plist
