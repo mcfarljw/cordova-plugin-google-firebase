@@ -36,8 +36,6 @@
 
     <hook type="after_prepare" src="hooks/android.js" />
 
-    <framework src="com.google.android.gms:play-services-analytics:16.0.1" />
-    <framework src="com.google.android.gms:play-services-tagmanager:16.0.1" />
     <framework src="com.google.firebase:firebase-ads:15.0.1" />
     <framework src="com.google.firebase:firebase-core:16.0.1" />
 
@@ -60,7 +58,6 @@
     <framework src="AdSupport.framework" />
     <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1"/>
     <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1"/>
-    <framework src="GoogleTagManager" type="podspec" spec="~> 6.0.0"/>
 
     <source-file src="src/ios/FirebasePlugin.swift" />
 
