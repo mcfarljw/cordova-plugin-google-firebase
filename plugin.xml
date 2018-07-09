@@ -34,7 +34,7 @@
       <uses-permission android:name="android.permission.INTERNET" />
     </config-file>
 
-    <hook type="after_prepare" src="hooks/android.js" />
+    <framework src="build.gradle" custom="true" type="gradleReference" />
 
     <framework src="com.google.firebase:firebase-ads:15.0.1" />
     <framework src="com.google.firebase:firebase-core:16.0.1" />
@@ -53,11 +53,11 @@
 			</feature>
 		</config-file>
 
-    <hook type="after_prepare" src="hooks/ios.js" />
-
     <framework src="AdSupport.framework" />
-    <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1" />
-    <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1" />
+    <framework src="Firebase/AdMob" type="podspec" spec="~> 5.4.0" />
+    <framework src="Firebase/Core" type="podspec" spec="~> 5.4.0" />
+    <framework src="Crashlytics" type="podspec" spec="~> 3.10.3"/>
+    <framework src="Fabric" type="podspec" spec="~> 1.7.8"/>
 
     <source-file src="src/ios/FirebasePlugin.swift" />
 
