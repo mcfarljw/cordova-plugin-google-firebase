@@ -60,5 +60,14 @@ module.exports = {
         }
       )
     }
+  },
+  crashlytics: {
+    test: function () {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'crashlyticsTest', [])
+        }
+      )
+    }
   }
 }

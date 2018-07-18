@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -96,6 +97,12 @@ public class FirebasePlugin extends CordovaPlugin {
 
             return true;
         }
+
+        if ("crashlyticsTest".equals(action)) {
+          crashlyticsTest();
+
+          return true;
+      }
 
         return false;
     }
@@ -191,6 +198,10 @@ public class FirebasePlugin extends CordovaPlugin {
                 mAnalytics.setUserId(userId);
             }
         });
+    }
+
+    private void crashlyticsTest() {
+        Crashlytics.getInstance().crash();
     }
 
 }

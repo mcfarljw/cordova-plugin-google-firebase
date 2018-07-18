@@ -1,3 +1,4 @@
+import Crashlytics
 import Firebase
 import GoogleMobileAds
 
@@ -123,6 +124,13 @@ class FirebasePlugin : CDVPlugin {
       Analytics.setUserID(userId)
 
       self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
+    }
+  }
+
+  @objc(crashlyticsTest:)
+  func crashlyticsTest(command: CDVInvokedUrlCommand) {
+    DispatchQueue.global(qos: .userInitiated).async {
+      Crashlytics.sharedInstance().crash()
     }
   }
 
