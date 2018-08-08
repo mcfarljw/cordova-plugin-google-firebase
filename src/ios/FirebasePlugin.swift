@@ -25,7 +25,7 @@ class FirebasePlugin : CDVPlugin {
 
   @objc(admobAddTestDevice:)
   func admobAddTestDevice(command: CDVInvokedUrlCommand) {
-      DispatchQueue.global(qos: .userInitiated).async {
+      DispatchQueue.global(qos: .userInitiated).sync {
           let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
           let testDeviceId = command.arguments[0] as? String ?? ""
 
@@ -39,7 +39,7 @@ class FirebasePlugin : CDVPlugin {
 
   @objc(admobGetTestDevices:)
   func admobGetTestDevices(command: CDVInvokedUrlCommand) {
-    DispatchQueue.global(qos: .userInitiated).async {
+    DispatchQueue.global(qos: .userInitiated).sync {
       self.commandDelegate.send(
         CDVPluginResult(status: CDVCommandStatus_OK, messageAs: testDevices),
         callbackId: command.callbackId
