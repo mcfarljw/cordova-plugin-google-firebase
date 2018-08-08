@@ -13,8 +13,13 @@ class FirebasePlugin : CDVPlugin {
 
   @objc(pluginInitialize)
   override func pluginInitialize() {
+    NotificationCenter.default.addObserver(self, selector: #selector(self.finishLaunching), name: .UIApplicationDidFinishLaunching, object: nil)
+  }
+
+  @objc(finishLaunching:)
+  func finishLaunching(_ notification: Notification) {
     if (FirebaseApp.app() == nil) {
-      FirebaseApp.configure()
+        FirebaseApp.configure()
     }
   }
 
