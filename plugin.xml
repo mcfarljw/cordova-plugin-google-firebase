@@ -36,9 +36,9 @@
 
     <framework src="build.gradle" custom="true" type="gradleReference" />
 
-    <framework src="com.google.android.gms:play-services-tagmanager:16.0.1" />
+    <framework src="com.google.android.gms:play-services-tagmanager:16.0.3" />
     <framework src="com.google.firebase:firebase-ads:15.0.1" />
-    <framework src="com.google.firebase:firebase-core:16.0.1" />
+    <framework src="com.google.firebase:firebase-core:16.0.3" />
 
     <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
@@ -57,8 +57,8 @@
     <framework src="AdSupport.framework" />
     <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1" />
     <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1" />
-    <framework src="Crashlytics" type="podspec" spec="~> 3.10.5"/>
-    <framework src="Fabric" type="podspec" spec="~> 1.7.9"/>
+    <framework src="Crashlytics" type="podspec" spec="~> 3.10.7"/>
+    <framework src="Fabric" type="podspec" spec="~> 1.7.11"/>
     <framework src="GoogleTagManager" type="podspec" spec="~> 6.0.0"/>
 
     <source-file src="src/ios/FirebasePlugin.swift" />
