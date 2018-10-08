@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="cordova-plugin-google-firebase"
-        version="0.7.4">
+        version="0.8.0">
 
   <name>Firebase</name>
   <description>Cordova plugin for Google Firebase</description>
@@ -23,6 +23,8 @@
 
   <platform name="android">
 
+    <preference name="APP_ID" default="ca-app-pub-3940256099942544~3347511713" />
+
     <config-file target="config.xml" parent="/*">
       <feature name="FirebasePlugin" >
         <param name="android-package" value="com.jernung.plugins.firebase.FirebasePlugin" />
@@ -34,10 +36,14 @@
       <uses-permission android:name="android.permission.INTERNET" />
     </config-file>
 
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID" />
+    </config-file>
+
     <framework src="build.gradle" custom="true" type="gradleReference" />
 
-    <framework src="com.google.android.gms:play-services-tagmanager:16.0.3" />
-    <framework src="com.google.firebase:firebase-ads:16.0.1" />
+    <framework src="com.google.android.gms:play-services-tagmanager:16.0.4" />
+    <framework src="com.google.firebase:firebase-ads:17.0.0" />
     <framework src="com.google.firebase:firebase-core:16.0.4" />
 
     <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
