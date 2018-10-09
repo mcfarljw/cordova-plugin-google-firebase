@@ -63,9 +63,9 @@
     <framework src="AdSupport.framework" />
     <framework src="Firebase/AdMob" type="podspec" spec="~> 4.8.1" />
     <framework src="Firebase/Core" type="podspec" spec="~> 4.8.1" />
-    <framework src="Crashlytics" type="podspec" spec="~> 3.10.7"/>
-    <framework src="Fabric" type="podspec" spec="~> 1.7.11"/>
-    <framework src="GoogleTagManager" type="podspec" spec="~> 6.0.0"/>
+    <framework src="Crashlytics" type="podspec" spec="~> 3.10.9" />
+    <framework src="Fabric" type="podspec" spec="~> 1.7.13" />
+    <framework src="GoogleTagManager" type="podspec" spec="~> 6.0.0" />
 
     <source-file src="src/ios/FirebasePlugin.swift" />
 
