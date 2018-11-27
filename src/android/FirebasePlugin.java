@@ -143,7 +143,11 @@ public class FirebasePlugin extends CordovaPlugin {
     private void admobSetAdmobAppId(final String appId) {
         this.applicationId = appId;
 
-        MobileAds.initialize(applicationContext, this.applicationId);
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                MobileAds.initialize(applicationContext, appId);
+            }
+        });
     }
 
     private void admobSetInterstitialId(final String interstitialId) {
