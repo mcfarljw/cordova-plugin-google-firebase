@@ -32,8 +32,8 @@
     "test:ios": "node build/test-ios"
   },
   "devDependencies": {
-    "cordova": "^8.0.0",
-    "fs-extra": "^7.0.0",
-    "shelljs": "^0.8.2"
+    "cordova": "^8.1.2",
+    "fs-extra": "^7.0.1",
+    "shelljs": "^0.8.3"
   }
 }
