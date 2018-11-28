@@ -59,9 +59,11 @@ class FirebasePlugin : CDVPlugin {
 
             self.applicationId = command.arguments[0] as? String ?? "ca-app-pub-3940256099942544~1458002511"
 
-            GADMobileAds.configure(withApplicationID: self.applicationId)
+            DispatchQueue.main.async {
+                GADMobileAds.configure(withApplicationID: self.applicationId)
 
-            self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
+                self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
+            }
         }
     }
 
