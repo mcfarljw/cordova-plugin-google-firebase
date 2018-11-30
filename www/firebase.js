@@ -69,5 +69,14 @@ module.exports = {
         }
       )
     }
+  },
+  remoteConfig: {
+    setup: function () {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigSetup', [])
+        }
+      )
+    }
   }
 }

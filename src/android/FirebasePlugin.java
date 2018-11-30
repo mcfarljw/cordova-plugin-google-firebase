@@ -10,6 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -27,6 +28,7 @@ public class FirebasePlugin extends CordovaPlugin {
     private String applicationId;
     private String interstitialId;
     private FirebaseAnalytics mAnalytics;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private InterstitialAd mInterstitialAd;
     private JSONArray mTestDeviceIds;
 
@@ -37,7 +39,6 @@ public class FirebasePlugin extends CordovaPlugin {
         applicationContext = cordova.getActivity().getApplicationContext();
 
         mAnalytics = FirebaseAnalytics.getInstance(applicationContext);
-        mInterstitialAd = new InterstitialAd(applicationContext);
         mTestDeviceIds = new JSONArray();
     }
 
@@ -98,11 +99,19 @@ public class FirebasePlugin extends CordovaPlugin {
             return true;
         }
 
+        // CRASHLYTICS
         if ("crashlyticsTest".equals(action)) {
-          crashlyticsTest();
+            crashlyticsTest();
 
-          return true;
-      }
+            return true;
+        }
+
+        // REMOTE CONFIG
+        if ("remoteConfigSetup".equals(action)) {
+            remoteConfigSetup();
+
+            return true;
+        }
 
         return false;
     }
@@ -152,6 +161,10 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private void admobSetInterstitialId(final String interstitialId) {
         this.interstitialId = interstitialId;
+
+        if (mInterstitialAd == null) {
+            mInterstitialAd = new InterstitialAd(applicationContext);
+        }
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -206,6 +219,10 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private void crashlyticsTest() {
         Crashlytics.getInstance().crash();
+    }
+
+    private void remoteConfigSetup() {
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     }
 
 }

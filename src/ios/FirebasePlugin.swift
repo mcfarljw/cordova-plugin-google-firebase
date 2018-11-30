@@ -10,6 +10,7 @@ class FirebasePlugin : CDVPlugin {
     var applicationId: String = "ca-app-pub-3940256099942544~1458002511"
     var interstitial: GADInterstitial!
     var interstitialUnitId: String = "ca-app-pub-3940256099942544/4411468910"
+    var remoteConfig: RemoteConfig!
 
 
     @objc(pluginInitialize)
@@ -128,6 +129,13 @@ class FirebasePlugin : CDVPlugin {
     func crashlyticsTest(command: CDVInvokedUrlCommand) {
         DispatchQueue.global(qos: .userInitiated).async {
             Crashlytics.sharedInstance().crash()
+        }
+    }
+
+    @objc(remoteConfigSetup:)
+    func remoteConfigSetup(command: CDVInvokedUrlCommand) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.remoteConfig = RemoteConfig.remoteConfig()
         }
     }
 
