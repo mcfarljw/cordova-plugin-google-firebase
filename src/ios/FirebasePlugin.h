@@ -13,7 +13,9 @@
 - (void)admobSetup:(CDVInvokedUrlCommand*)command;
 - (void)admobShowInterstitial:(CDVInvokedUrlCommand*)command;
 - (void)analyticsLogEvent:(CDVInvokedUrlCommand*)command;
+- (void)analyticsSetScreenName:(CDVInvokedUrlCommand*)command;
 - (void)analyticsSetUserId:(CDVInvokedUrlCommand*)command;
+- (void)analyticsSetUserProperty:(CDVInvokedUrlCommand*)command;
 - (void)crashlyticsTest:(CDVInvokedUrlCommand*)command;
 - (void)remoteConfigSetup:(CDVInvokedUrlCommand*)command;
 
