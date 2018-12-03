@@ -7,20 +7,10 @@
 
 @implementation FirebasePlugin
 
-static FirebasePlugin *firebasePlugin;
-
-+ (FirebasePlugin *) firebasePlugin {
-    return firebasePlugin;
-}
-
-- (void)pluginInitialize {
-    firebasePlugin = self;
-}
-
 - (void)admobRequestInterstitial {
     [self.commandDelegate runInBackground:^{
         self.interstitial = [[GADInterstitial alloc] initWithAdUnitID:self.interstitialId];
-        self.interstitial.delegate = self.appDelegate;
+        self.interstitial.delegate = (id <GADInterstitialDelegate>)self;
 
         GADRequest *request = [GADRequest request];
 
@@ -40,16 +30,14 @@ static FirebasePlugin *firebasePlugin;
         [self.testDevices addObjectsFromArray:testDevices];
     }
 
-    [self.commandDelegate runInBackground:^{
-        [GADMobileAds configureWithApplicationID:appId];
+    [GADMobileAds configureWithApplicationID:appId];
 
-        self.applicationId = appId;
-        self.interstitialId = interstitialId;
+    self.applicationId = appId;
+    self.interstitialId = interstitialId;
 
-        [self admobRequestInterstitial];
+    [self admobRequestInterstitial];
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)admobShowInterstitial:(CDVInvokedUrlCommand*)command {
@@ -130,6 +118,7 @@ static FirebasePlugin *firebasePlugin;
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
+    NSLog(@"POOPING");
     [self admobRequestInterstitial];
 }
 
