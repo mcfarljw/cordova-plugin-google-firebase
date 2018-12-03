@@ -19,7 +19,7 @@
     <clobbers target="plugins.firebase" />
   </js-module>
 
-  <dependency id="cordova-plugin-add-swift-support" version="1.7.2" />
+  <hook type="after_prepare" src="scripts/after_prepare.js" />
 
   <platform name="android">
 
@@ -40,13 +40,12 @@
       <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID" />
     </config-file>
 
-    <framework src="build.gradle" custom="true" type="gradleReference" />
+    <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
 
     <framework src="com.google.android.gms:play-services-tagmanager:16.0.5" />
     <framework src="com.google.firebase:firebase-ads:17.1.1" />
     <framework src="com.google.firebase:firebase-config:16.1.0" />
     <framework src="com.google.firebase:firebase-core:16.0.5" />
-    <framework src="com.google.firebase:firebase-perf:16.2.1" />
 
     <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
@@ -62,16 +61,37 @@
 			</feature>
 		</config-file>
 
-    <framework src="AdSupport.framework" />
-    <framework src="Firebase/AdMob" type="podspec" spec="~> 5.13.0" />
-    <framework src="Firebase/Core" type="podspec" spec="~> 5.13.0" />
-    <framework src="Firebase/Performance" type="podspec" spec="~> 5.13.0" />
-    <framework src="Firebase/RemoteConfig" type="podspec" spec="~> 5.13.0" />
-    <framework src="Crashlytics" type="podspec" spec="~> 3.12.0" />
-    <framework src="Fabric" type="podspec" spec="~> 1.9.0" />
-    <framework src="GoogleTagManager" type="podspec" spec="~> 7.1.1" />
+    <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
 
-    <source-file src="src/ios/FirebasePlugin.swift" />
+    <framework src="AdSupport.framework" />
+    <framework src="Security.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="libc++.tbd" />
+    <framework src="libz.tbd" />
+
+    <framework custom="true" src="src/ios/Crashlytics/Crashlytics.framework" />
+    <framework custom="true" src="src/ios/Crashlytics/Fabric.framework" />
+    <framework custom="true" src="src/ios/Firebase/Admob/GoogleMobileAds.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/FIRAnalyticsConnector.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseAnalytics.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseCore.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseCoreDiagnostics.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseInstanceID.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/GoogleAppMeasurement.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/GoogleUtilities.framework" />
+    <framework custom="true" src="src/ios/Firebase/Analytics/nanopb.framework" />
+    <framework custom="true" src="src/ios/Firebase/Performance/FirebasePerformance.framework" />
+    <framework custom="true" src="src/ios/Firebase/Performance/GoogleToolboxForMac.framework" />
+    <framework custom="true" src="src/ios/Firebase/Performance/GTMSessionFetcher.framework" />
+    <framework custom="true" src="src/ios/Firebase/RemoteConfig/FirebaseABTesting.framework" />
+    <framework custom="true" src="src/ios/Firebase/RemoteConfig/FirebaseRemoteConfig.framework" />
+    <framework custom="true" src="src/ios/Firebase/RemoteConfig/Protobuf.framework" />
+
+    <header-file src="src/ios/Firebase/Firebase.h" />
+    <header-file src="src/ios/AppDelegate+FirebasePlugin.h" />
+    <source-file src="src/ios/AppDelegate+FirebasePlugin.m" />
+    <header-file src="src/ios/FirebasePlugin.h" />
+		<source-file src="src/ios/FirebasePlugin.m" />
 
   </platform>
 

@@ -27,13 +27,9 @@
       "ios"
     ]
   },
-  "scripts": {
-    "test:android": "node build/test-android",
-    "test:ios": "node build/test-ios"
-  },
-  "devDependencies": {
-    "cordova": "^8.1.2",
+  "dependencies": {
     "fs-extra": "^7.0.1",
-    "shelljs": "^0.8.3"
+    "xcode": "^1.0.0",
+    "xml-js": "^1.6.8"
   }
 }

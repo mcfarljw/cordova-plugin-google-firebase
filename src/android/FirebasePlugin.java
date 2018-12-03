@@ -36,7 +36,7 @@ public class FirebasePlugin extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
 
-        applicationContext = cordova.getActivity().getApplicationContext();
+        self.applicationContext = cordova.getActivity().getApplicationContext();
 
         mAnalytics = FirebaseAnalytics.getInstance(applicationContext);
         mTestDeviceIds = new JSONArray();
@@ -44,40 +44,17 @@ public class FirebasePlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        // ADMOB
-        if ("admobAddTestDevice".equals(action)) {
-            admobAddTestDevice(args.getString(0));
+        if ("admobSetup".equals(action)) {
+            String appId = args.getString(0);
+            String interstitialId = args.getString(1);
+            JSONArray testDevices = args.getJSONArray(1);
 
-            callbackContext.success(admobGetTestDevices());
-
-            return true;
-        }
-
-        if ("admobGetTestDevices".equals(action)) {
-            callbackContext.success(admobGetTestDevices());
+            admobSetup(appId, interstitialId, testDevices);
 
             return true;
         }
 
-        if ("admobRequestInterstitial".equals(action)) {
-            admobRequestNewInterstitial();
 
-            return true;
-        }
-
-        if ("admobSetAdmobAppId".equals(action)) {
-            admobSetAdmobAppId(args.getString(0));
-
-            return true;
-        }
-
-        if ("admobSetInterstitialId".equals(action)) {
-            admobSetInterstitialId(args.getString(0));
-
-            return true;
-        }
-
-        // ANALYTICS
         if ("admobShowInterstitial".equals(action)) {
             showInterstitial();
 
@@ -85,28 +62,36 @@ public class FirebasePlugin extends CordovaPlugin {
         }
 
         if ("analyticsLogEvent".equals(action)) {
-            String eventName = args.getString(0);
-            JSONObject eventParams = args.getJSONObject(1);
+            String name = args.getString(0);
+            JSONObject params = args.getJSONObject(1);
 
-            analyticsLogEvent(eventName, eventParams);
+            analyticsLogEvent(name, params);
 
+            return true;
+        }
+
+        if ("analyticsSetScreenName".equals(action)) {
             return true;
         }
 
         if ("analyticsSetUserId".equals(action)) {
-            analyticsSetUserId(args.getString(0));
+            String id = args.getString(0)
+
+            analyticsSetUserId(id);
 
             return true;
         }
 
-        // CRASHLYTICS
+        if ("analyticsSetUserProperty".equals(action)) {
+            return true;
+        }
+
         if ("crashlyticsTest".equals(action)) {
             crashlyticsTest();
 
             return true;
         }
 
-        // REMOTE CONFIG
         if ("remoteConfigSetup".equals(action)) {
             remoteConfigSetup();
 
@@ -116,16 +101,8 @@ public class FirebasePlugin extends CordovaPlugin {
         return false;
     }
 
-    private void admobAddTestDevice(final String deviceId) {
-        mTestDeviceIds.put(deviceId);
-    }
-
     private Boolean admobCanRequestNewAd() {
         return !mInterstitialAd.isLoaded() && !mInterstitialAd.isLoading();
-    }
-
-    private JSONArray admobGetTestDevices() {
-        return mTestDeviceIds;
     }
 
     private void admobRequestNewInterstitial() {
@@ -149,25 +126,16 @@ public class FirebasePlugin extends CordovaPlugin {
         });
     }
 
-    private void admobSetAdmobAppId(final String appId) {
+    private void admobSetup(final String appId, final String interstitialId, final JSONArray testDevices) {
         this.applicationId = appId;
+        this.interstitialId = interstitialId
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 MobileAds.initialize(applicationContext, appId);
-            }
-        });
-    }
 
-    private void admobSetInterstitialId(final String interstitialId) {
-        this.interstitialId = interstitialId;
+                mInterstitialAd = new InterstitialAd(applicationContext);
 
-        if (mInterstitialAd == null) {
-            mInterstitialAd = new InterstitialAd(applicationContext);
-        }
-
-        cordova.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
                 mInterstitialAd.setAdUnitId(interstitialId);
                 mInterstitialAd.setAdListener(
                         new AdListener() {
@@ -195,13 +163,13 @@ public class FirebasePlugin extends CordovaPlugin {
         });
     }
 
-    private void analyticsLogEvent(final String eventName, final JSONObject eventParams) {
+    private void analyticsLogEvent(final String name, final JSONObject params) {
         try {
-            final Bundle params = PluginUtils.jsonToBundle(eventParams);
+            final Bundle paramBundle = PluginUtils.jsonToBundle(params);
 
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
-                    mAnalytics.logEvent(eventName, params);
+                    mAnalytics.logEvent(name, paramBundle);
                 }
             });
         } catch (Exception error) {
@@ -209,10 +177,10 @@ public class FirebasePlugin extends CordovaPlugin {
         }
     }
 
-    private void analyticsSetUserId(final String userId) {
+    private void analyticsSetUserId(final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                mAnalytics.setUserId(userId);
+                mAnalytics.setUserId(id);
             }
         });
     }
@@ -221,8 +189,6 @@ public class FirebasePlugin extends CordovaPlugin {
         Crashlytics.getInstance().crash();
     }
 
-    private void remoteConfigSetup() {
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-    }
+    private void remoteConfigSetup() {}
 
 }

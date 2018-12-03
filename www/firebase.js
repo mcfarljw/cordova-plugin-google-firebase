@@ -2,38 +2,10 @@ const exec = require('cordova/exec')
 
 module.exports = {
   admob: {
-    addTestDevice: function (deviceId) {
+    setup: function (appId, interstitialId, testDevices) {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobAddTestDevice', [deviceId]);
-        }
-      )
-    },
-    getTestDevices: function () {
-      return new Promise(
-        function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobGetTestDevices', []);
-        }
-      )
-    },
-    requestInterstitial: function () {
-      return new Promise(
-        function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobRequestInterstitial', []);
-        }
-      )
-    },
-    setApplicationId: function (appId) {
-      return new Promise(
-        function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobSetAdmobAppId', [appId]);
-        }
-      )
-    },
-    setInterstitialId: function (unitId) {
-      return new Promise(
-        function(resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobSetInterstitialId', [unitId]);
+          exec(resolve, reject, 'FirebasePlugin', 'admobSetup', [appId, interstitialId, testDevices || {}]);
         }
       )
     },
@@ -46,17 +18,31 @@ module.exports = {
     }
   },
   analytics: {
-    logEvent: function (eventName, eventParams) {
+    logEvent: function (name, params) {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'analyticsLogEvent', [eventName, eventParams || {}])
+          exec(resolve, reject, 'FirebasePlugin', 'analyticsLogEvent', [name, params || {}])
         }
       )
     },
-    setUserId: function (userId) {
+    setScreenName: function (name) {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'analyticsSetUserId', [userId])
+          exec(resolve, reject, 'FirebasePlugin', 'analyticsSetScreenName', [name])
+        }
+      )
+    },
+    setUserId: function (id) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'analyticsSetUserId', [id])
+        }
+      )
+    },
+    setUserProperty: function (name, value) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'analyticsSetUserProperty', [name, value])
         }
       )
     }
