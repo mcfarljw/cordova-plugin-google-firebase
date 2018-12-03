@@ -1,0 +1,2 @@
+src/ios/Crashlytics/** filter=lfs diff=lfs merge=lfs -text
+src/ios/Firebase/** filter=lfs diff=lfs merge=lfs -text
