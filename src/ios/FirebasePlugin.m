@@ -118,7 +118,6 @@
 }
 
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
-    NSLog(@"POOPING");
     [self admobRequestInterstitial];
 }
 
