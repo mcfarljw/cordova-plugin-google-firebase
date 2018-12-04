@@ -1,5 +1,4 @@
 const filesystem = require('fs-extra')
-const path = require('path')
 const xcode = require('xcode')
 
 module.exports = async function (context) {
@@ -12,6 +11,7 @@ module.exports = async function (context) {
   async function setupCrashlytics () {
     const key = project.generateUuid()
     const comment = '\"Crashlytics\"'
+    const script =  '"' + '\\"${PROJECT_DIR}' + globals.NAME + '/Plugins/' + context.opts.plugin.id + '/Fabric.framework/run\\"' + '"'
 
     project.hash.project.objects.PBXShellScriptBuildPhase[key] = {
       isa: 'PBXShellScriptBuildPhase',
@@ -25,7 +25,7 @@ module.exports = async function (context) {
       outputPaths: [],
       runOnlyForDeploymentPostprocessing: 0,
       shellPath: '/bin/sh',
-      shellScript: '\"${PROJECT_DIR}' + `/${globals.NAME}/Plugins/${context.opts.plugin.id}/Fabric.framework/run\"`
+      shellScript: script
     }
 
     project.hash.project.objects.PBXShellScriptBuildPhase[`${key}_comment`] = comment
