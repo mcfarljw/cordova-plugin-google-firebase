@@ -5,14 +5,14 @@ module.exports = {
     setup: function (appId, interstitialId, testDevices) {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobSetup', [appId, interstitialId, testDevices || {}]);
+          exec(resolve, reject, 'FirebasePlugin', 'admobSetup', [appId, interstitialId, testDevices || []])
         }
       )
     },
     showInterstitial: function () {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobShowInterstitial', []);
+          exec(resolve, reject, 'FirebasePlugin', 'admobShowInterstitial', [])
         }
       )
     }

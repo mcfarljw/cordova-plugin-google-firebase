@@ -36,7 +36,7 @@ public class FirebasePlugin extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
 
-        self.applicationContext = cordova.getActivity().getApplicationContext();
+        applicationContext = cordova.getActivity().getApplicationContext();
 
         mAnalytics = FirebaseAnalytics.getInstance(applicationContext);
         mTestDeviceIds = new JSONArray();
@@ -47,13 +47,12 @@ public class FirebasePlugin extends CordovaPlugin {
         if ("admobSetup".equals(action)) {
             String appId = args.getString(0);
             String interstitialId = args.getString(1);
-            JSONArray testDevices = args.getJSONArray(1);
+            JSONArray testDevices = args.getJSONArray(2);
 
             admobSetup(appId, interstitialId, testDevices);
 
             return true;
         }
-
 
         if ("admobShowInterstitial".equals(action)) {
             showInterstitial();
@@ -71,11 +70,15 @@ public class FirebasePlugin extends CordovaPlugin {
         }
 
         if ("analyticsSetScreenName".equals(action)) {
+            String name = args.getString(0);
+
+            analyticsSetScreenName(name);
+
             return true;
         }
 
         if ("analyticsSetUserId".equals(action)) {
-            String id = args.getString(0)
+            String id = args.getString(0);
 
             analyticsSetUserId(id);
 
@@ -83,6 +86,11 @@ public class FirebasePlugin extends CordovaPlugin {
         }
 
         if ("analyticsSetUserProperty".equals(action)) {
+            String name = args.getString(0);
+            String value = args.getString(1);
+
+            analyticsSetUserProperty(name, value);
+
             return true;
         }
 
@@ -99,6 +107,25 @@ public class FirebasePlugin extends CordovaPlugin {
         }
 
         return false;
+    }
+
+    private class InterstitialListener extends AdListener {
+        @Override
+        public void onAdFailedToLoad(int errorCode) {}
+
+        @Override
+        public void onAdLeftApplication() {}
+
+        @Override
+        public void onAdLoaded() {}
+
+        @Override
+        public void onAdOpened() {}
+
+        @Override
+        public void onAdClosed() {
+            admobRequestNewInterstitial();
+        }
     }
 
     private Boolean admobCanRequestNewAd() {
@@ -128,7 +155,8 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private void admobSetup(final String appId, final String interstitialId, final JSONArray testDevices) {
         this.applicationId = appId;
-        this.interstitialId = interstitialId
+        this.interstitialId = interstitialId;
+        this.mTestDeviceIds = testDevices;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -137,14 +165,8 @@ public class FirebasePlugin extends CordovaPlugin {
                 mInterstitialAd = new InterstitialAd(applicationContext);
 
                 mInterstitialAd.setAdUnitId(interstitialId);
-                mInterstitialAd.setAdListener(
-                        new AdListener() {
-                            @Override
-                            public void onAdClosed() {
-                                admobRequestNewInterstitial();
-                            }
-                        }
-                );
+
+                mInterstitialAd.setAdListener(new InterstitialListener());
 
                 admobRequestNewInterstitial();
             }
@@ -177,10 +199,26 @@ public class FirebasePlugin extends CordovaPlugin {
         }
     }
 
+    private void analyticsSetScreenName(final String name) {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
+            }
+        });
+    }
+
     private void analyticsSetUserId(final String id) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 mAnalytics.setUserId(id);
+            }
+        });
+    }
+
+    private void analyticsSetUserProperty(final String name, final String value) {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                mAnalytics.setUserProperty(name, value);
             }
         });
     }

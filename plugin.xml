@@ -47,6 +47,8 @@
     <framework src="com.google.firebase:firebase-config:16.1.0" />
     <framework src="com.google.firebase:firebase-core:16.0.5" />
 
+    <framework custom="true" src="build.gradle" type="gradleReference" />
+
     <source-file src="src/android/FirebasePlugin.java" target-dir="src/com/jernung/plugins/firebase" />
     <source-file src="src/android/PluginUtils.java" target-dir="src/com/jernung/plugins/firebase" />
 
