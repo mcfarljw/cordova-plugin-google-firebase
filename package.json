@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-google-firebase",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "Cordova plugin for Google Firebase.",
   "author": "Joshua McFarland",
   "license": "MIT",
