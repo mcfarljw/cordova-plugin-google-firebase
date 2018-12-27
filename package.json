@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "fs-extra": "^7.0.1",
-    "xcode": "^1.0.0",
+    "xcode": "^1.1.0",
     "xml-js": "^1.6.8"
   }
 }
