@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.8@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
        transitive = true
     }
 }
