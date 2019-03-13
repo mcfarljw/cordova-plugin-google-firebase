@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="cordova-plugin-google-firebase"
-        version="0.10.5">
+        version="0.10.6">
 
   <name>Firebase</name>
   <description>Cordova plugin for Google Firebase</description>
