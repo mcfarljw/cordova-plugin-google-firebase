@@ -3,7 +3,6 @@ const xcode = require('xcode')
 
 module.exports = async function (context) {
   const globals = require('../globals')(context)
-  // const utils = require('../utils')(context)
   const project = xcode.project(`${globals.IOS_XCODEPROJ}/project.pbxproj`)
 
   project.parseSync()

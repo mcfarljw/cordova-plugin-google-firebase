@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-google-firebase",
+  "version": "0.10.7",
+  "description": "Cordova plugin for Google Firebase.",
+  "author": "Joshua McFarland",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcfarljw/cordova-plugin-google-firebase/tree/master/plugin"
+  },
+  "engines": {
+    "node": ">=6.0.0",
+    "npm": ">=3.8.6"
+  },
+  "keywords": [
+    "cordova",
+    "cordova-android",
+    "cordova-ios",
+    "ecosystem:cordova",
+    "firebase",
+    "google"
+  ],
+  "cordova": {
+    "id": "cordova-plugin-google-firebase",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "xcode": "^2.0.0",
+    "xml-js": "^1.6.11"
+  }
+}
