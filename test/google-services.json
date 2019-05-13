@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1059502715324:android:80fd92315fbd03f3",
         "android_client_info": {
-          "package_name": "com.jernung.testing"
+          "package_name": "com.jernung.testing.firebase"
         }
       },
       "oauth_client": [
