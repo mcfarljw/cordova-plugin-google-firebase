@@ -10,7 +10,7 @@ module.exports = async function (context) {
   async function setupCrashlytics () {
     const key = project.generateUuid()
     const comment = '\"Crashlytics\"'
-    const script =  '"' + '\\"${PROJECT_DIR}/' + globals.NAME + '/Plugins/' + context.opts.plugin.id + '/Fabric.framework/run\\"' + '"'
+    const script =  '"' + '\\"${PODS_ROOT}/Fabric/run\\"'  + '"'
 
     project.hash.project.objects.PBXShellScriptBuildPhase[key] = {
       isa: 'PBXShellScriptBuildPhase',

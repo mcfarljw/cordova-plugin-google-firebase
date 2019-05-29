@@ -63,31 +63,20 @@
 
     <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
 
-    <framework src="AdSupport.framework" />
-    <framework src="Security.framework" />
-    <framework src="SystemConfiguration.framework" />
-    <framework src="libc++.tbd" />
-    <framework src="libz.tbd" />
+    <podspec>
+      <config>
+        <source url="https://github.com/CocoaPods/Specs.git" />
+      </config>
+      <pods>
+        <pod name="Crashlytics" spec="~> 3.13.1" />
+        <pod name="Fabric" spec="~> 1.10.1" />
+        <pod name="Firebase/AdMob" spec="~> 6.1.0" />
+        <pod name="Firebase/Analytics" spec="~> 6.1.0" />
+        <pod name="Firebase/Performance" spec="~> 6.1.0" />
+        <pod name="Firebase/RemoteConfig" spec="~> 6.1.0" />
+      </pods>
+    </podspec>
 
-    <framework custom="true" src="src/ios/Crashlytics/Crashlytics.framework" />
-    <framework custom="true" src="src/ios/Crashlytics/Fabric.framework" />
-    <framework custom="true" src="src/ios/Firebase/Admob/GoogleMobileAds.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/FIRAnalyticsConnector.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseAnalytics.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseCore.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseCoreDiagnostics.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/FirebaseInstanceID.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/GoogleAppMeasurement.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/GoogleUtilities.framework" />
-    <framework custom="true" src="src/ios/Firebase/Analytics/nanopb.framework" />
-    <framework custom="true" src="src/ios/Firebase/Performance/FirebasePerformance.framework" />
-    <framework custom="true" src="src/ios/Firebase/Performance/GoogleToolboxForMac.framework" />
-    <framework custom="true" src="src/ios/Firebase/Performance/GTMSessionFetcher.framework" />
-    <framework custom="true" src="src/ios/Firebase/RemoteConfig/FirebaseABTesting.framework" />
-    <framework custom="true" src="src/ios/Firebase/RemoteConfig/FirebaseRemoteConfig.framework" />
-    <framework custom="true" src="src/ios/Firebase/RemoteConfig/Protobuf.framework" />
-
-    <header-file src="src/ios/Firebase/Firebase.h" />
     <header-file src="src/ios/AppDelegate+FirebasePlugin.h" />
     <source-file src="src/ios/AppDelegate+FirebasePlugin.m" />
     <header-file src="src/ios/FirebasePlugin.h" />
