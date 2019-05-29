@@ -26,7 +26,8 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-google-firebase": {
-        "APP_ID": "ca-app-pub-3940256099942544~3347511713"
+        "APP_ID_ANDROID": "ca-app-pub-3940256099942544~3347511713",
+        "APP_ID_IOS": "ca-app-pub-3940256099942544~1458002511"
       },
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
