@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-google-firebase",
-  "version": "0.10.7",
+  "version": "0.11.0",
   "description": "Cordova plugin for Google Firebase.",
   "author": "Joshua McFarland",
   "license": "MIT",
@@ -11,12 +11,13 @@
   "scripts": {
     "publish": "cd plugin && npm publish",
     "setup": "node scripts/setup",
+    "open:ios": "open test/platforms/ios/Firebase.xcworkspace",
     "test:android": "node scripts/test-android",
     "test:ios": "node scripts/test-ios"
   },
   "dependencies": {
     "cordova": "^9.0.0",
-    "fs-extra": "^8.0.0",
+    "fs-extra": "^8.0.1",
     "shelljs": "^0.8.3"
   }
 }
