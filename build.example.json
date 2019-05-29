@@ -4,6 +4,7 @@
     "debug": {
       "codeSignIdentity": "iPhone Developer",
       "developmentTeam": "",
+      "automaticProvisioning": true,
       "packageType": "development",
       "buildFlag": [
         "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
