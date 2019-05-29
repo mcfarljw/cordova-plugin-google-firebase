@@ -17,6 +17,8 @@
 
     [FIRApp configure];
 
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+
     return YES;
 }
 
