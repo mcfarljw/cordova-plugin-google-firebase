@@ -28,7 +28,9 @@
       "cordova-plugin-google-firebase": {
         "APP_ID": "ca-app-pub-3940256099942544~3347511713"
       },
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-device": {}
     },
     "platforms": [
