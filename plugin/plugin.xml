@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="cordova-plugin-google-firebase"
-        version="0.11.0">
+        version="0.11.2">
 
   <name>Firebase</name>
   <description>Cordova plugin for Google Firebase</description>
@@ -21,7 +21,7 @@
 
   <platform name="android">
 
-    <preference name="APP_ID" default="ca-app-pub-3940256099942544~3347511713" />
+    <preference name="APP_ID_ANDROID" default="ca-app-pub-3940256099942544~3347511713" />
 
     <config-file target="config.xml" parent="/*">
       <feature name="FirebasePlugin" >
@@ -35,7 +35,7 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID" />
+      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID" />
     </config-file>
 
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
@@ -54,12 +54,22 @@
 
   <platform name="ios">
 
+    <preference name="APP_ID_IOS" default="ca-app-pub-3940256099942544~1458002511" />
+
     <config-file target="config.xml" parent="/*">
 			<feature name="FirebasePlugin">
 				<param name="ios-package" value="FirebasePlugin" />
 				<param name="onload" value="true" />
 			</feature>
 		</config-file>
+
+    <config-file parent="GADApplicationIdentifier" target="*-Info.plist">
+        <string>$APP_ID_IOS</string>
+    </config-file>
+
+    <config-file parent="GADIsAdManagerApp" target="*-Info.plist">
+        <true />
+    </config-file>
 
     <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
 
