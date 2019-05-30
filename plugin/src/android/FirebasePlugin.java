@@ -19,6 +19,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,11 +31,14 @@ public class FirebasePlugin extends CordovaPlugin {
     private Context applicationContext;
     private String applicationId;
     private String interstitialId;
-    private String rewardedVideoId;
+    private CallbackContext interstitialClosedCallback;
+    private String rewardVideoId;
+    private CallbackContext rewardVideoClosedCallback;
+    private CallbackContext rewardVideoCompleteCallback;
     private FirebaseAnalytics mAnalytics;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private InterstitialAd mInterstitialAd;
-    private RewardedVideoAd mRewardedVideoAd;
+    private RewardedVideoAd mRewardVideoAd;
     private JSONArray mTestDeviceIds;
 
     @Override
@@ -66,8 +70,8 @@ public class FirebasePlugin extends CordovaPlugin {
             return true;
         }
 
-        if ("admobShowRewardedVideo".equals(action)) {
-            showRewardedVideo();
+        if ("admobShowRewardVideo".equals(action)) {
+            showRewardVideo();
 
             return true;
         }
@@ -112,6 +116,24 @@ public class FirebasePlugin extends CordovaPlugin {
             return true;
         }
 
+        if ("onInterstitialClosed".equals(action)) {
+            this.interstitialClosedCallback = callbackContext;
+
+            return true;
+        }
+
+        if ("onRewardVideoClosed".equals(action)) {
+            this.rewardVideoClosedCallback = callbackContext;
+
+            return true;
+        }
+
+        if ("onRewardVideoComplete".equals(action)) {
+            this.rewardVideoCompleteCallback = callbackContext;
+
+            return true;
+        }
+
         if ("remoteConfigSetup".equals(action)) {
             remoteConfigSetup();
 
@@ -136,7 +158,17 @@ public class FirebasePlugin extends CordovaPlugin {
 
         @Override
         public void onAdClosed() {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+
+            pluginResult.setKeepCallback(true);
+
             admobRequestNewInterstitial();
+
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    interstitialClosedCallback.sendPluginResult(pluginResult);
+                }
+            });
         }
     }
 
@@ -151,7 +183,19 @@ public class FirebasePlugin extends CordovaPlugin {
         public void onRewardedVideoStarted() {}
 
         @Override
-        public void onRewardedVideoAdClosed() { admobRequestNewRewardedVideo(); }
+        public void onRewardedVideoAdClosed() {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+
+            pluginResult.setKeepCallback(true);
+
+            admobRequestNewRewardedVideo();
+
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    rewardVideoClosedCallback.sendPluginResult(pluginResult);
+                }
+            });
+        }
 
         @Override
         public void onRewarded(RewardItem rewardItem) {}
@@ -163,7 +207,17 @@ public class FirebasePlugin extends CordovaPlugin {
         public void onRewardedVideoAdFailedToLoad(int i) {}
 
         @Override
-        public void onRewardedVideoCompleted() {}
+        public void onRewardedVideoCompleted() {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+
+            pluginResult.setKeepCallback(true);
+
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    rewardVideoCompleteCallback.sendPluginResult(pluginResult);
+                }
+            });
+        }
     }
 
     private void admobRequestNewInterstitial() {
@@ -201,17 +255,17 @@ public class FirebasePlugin extends CordovaPlugin {
                     Log.e(PLUGIN_NAME, error.getMessage());
                 }
 
-                if (!mRewardedVideoAd.isLoaded()) {
-                    mRewardedVideoAd.loadAd(rewardedVideoId, adRequest.build());
+                if (!mRewardVideoAd.isLoaded()) {
+                    mRewardVideoAd.loadAd(rewardVideoId, adRequest.build());
                 }
             }
         });
     }
 
-    private void admobSetup(final String appId, final String interstitialId, final String rewardedVideoId, final JSONArray testDevices) {
+    private void admobSetup(final String appId, final String interstitialId, final String rewardVideoId, final JSONArray testDevices) {
         this.applicationId = appId;
         this.interstitialId = interstitialId;
-        this.rewardedVideoId = rewardedVideoId;
+        this.rewardVideoId = rewardVideoId;
         this.mTestDeviceIds = testDevices;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
@@ -222,8 +276,8 @@ public class FirebasePlugin extends CordovaPlugin {
                 mInterstitialAd.setAdUnitId(interstitialId);
                 mInterstitialAd.setAdListener(new InterstitialListener());
 
-                mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(applicationContext);
-                mRewardedVideoAd.setRewardedVideoAdListener(new RewardedListener());
+                mRewardVideoAd = MobileAds.getRewardedVideoAdInstance(applicationContext);
+                mRewardVideoAd.setRewardedVideoAdListener(new RewardedListener());
 
                 admobRequestNewInterstitial();
                 admobRequestNewRewardedVideo();
@@ -243,11 +297,11 @@ public class FirebasePlugin extends CordovaPlugin {
         });
     }
 
-    private void showRewardedVideo() {
+    private void showRewardVideo() {
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                if (mRewardedVideoAd.isLoaded()) {
-                    mRewardedVideoAd.show();
+                if (mRewardVideoAd.isLoaded()) {
+                    mRewardVideoAd.show();
                 } else {
                     admobRequestNewInterstitial();
                 }

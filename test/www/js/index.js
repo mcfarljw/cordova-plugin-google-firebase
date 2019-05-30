@@ -29,7 +29,7 @@ var app = {
           window.plugins.firebase.admob.showRewardVideo()
         })
 
-        window.plugins.firebase.admob.onIntersitialClosed(function (callback) {
+        window.plugins.firebase.admob.onInterstitialClosed(function (callback) {
           console.log('EVENT', 'interstitial closed')
         })
 
