@@ -26,7 +26,19 @@ var app = {
         })
 
         $('#show-rewarded-video').click(function () {
-          window.plugins.firebase.admob.showRewardedVideo()
+          window.plugins.firebase.admob.showRewardVideo()
+        })
+
+        window.plugins.firebase.admob.onIntersitialClosed(function (callback) {
+          console.log('EVENT', 'interstitial closed')
+        })
+
+        window.plugins.firebase.admob.onRewardVideoClosed(function (callback) {
+          console.log('EVENT', 'reward video closed')
+        })
+
+        window.plugins.firebase.admob.onRewardVideoComplete(function (callback) {
+          console.log('EVENT', 'reward video complete')
         })
       }
     }

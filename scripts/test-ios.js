@@ -8,4 +8,4 @@ const root = resolve(__dirname, '..')
 shell.cd(`${root}/test`)
 
 // run on device on ios
-shell.exec('cordova run ios --buildConfig="../build.json"')
+shell.exec('cordova run ios --buildConfig')

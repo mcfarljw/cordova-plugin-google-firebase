@@ -20,18 +20,18 @@
     }];
 }
 
-- (void)admobRequestRewardedVideo {
+- (void)admobRequestRewardVideo {
     [self.commandDelegate runInBackground:^{
         [GADRewardBasedVideoAd sharedInstance].delegate = (id <GADRewardBasedVideoAdDelegate>)self;
-        [[GADRewardBasedVideoAd sharedInstance] loadRequest:[GADRequest request] withAdUnitID:self.rewardedVideoId];
+        [[GADRewardBasedVideoAd sharedInstance] loadRequest:[GADRequest request] withAdUnitID:self.rewardVideoId];
     }];
 }
 
-- (void)admobSetup:(CDVInvokedUrlCommand*)command {
+- (void)admobSetup:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* appId = [command.arguments objectAtIndex:0];
     NSString* interstitialId = [command.arguments objectAtIndex:1];
-    NSString* rewardedVideoId = [command.arguments objectAtIndex:2];
+    NSString* rewardVideoId = [command.arguments objectAtIndex:2];
     NSArray* testDevices = [command.arguments objectAtIndex:3];
 
     if (testDevices && testDevices.count) {
@@ -40,15 +40,15 @@
 
     self.applicationId = appId;
     self.interstitialId = interstitialId;
-    self.rewardedVideoId = rewardedVideoId;
+    self.rewardVideoId = rewardVideoId;
 
     [self admobRequestInterstitial];
-    [self admobRequestRewardedVideo];
+    [self admobRequestRewardVideo];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)admobShowInterstitial:(CDVInvokedUrlCommand*)command {
+- (void)admobShowInterstitial:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
     [self.commandDelegate runInBackground:^{
@@ -60,7 +60,7 @@
     }];
 }
 
-- (void)admobShowRewardedVideo:(CDVInvokedUrlCommand*)command {
+- (void)admobShowRewardVideo:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
     [self.commandDelegate runInBackground:^{
@@ -72,7 +72,7 @@
     }];
 }
 
-- (void)analyticsLogEvent:(CDVInvokedUrlCommand*)command {
+- (void)analyticsLogEvent:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* name = [command.arguments objectAtIndex:0];
     NSDictionary *parameters;
@@ -93,7 +93,7 @@
     }];
 }
 
-- (void)analyticsSetUserId:(CDVInvokedUrlCommand*)command {
+- (void)analyticsSetUserId:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* userId = [command.arguments objectAtIndex:0];
 
@@ -104,7 +104,7 @@
     }];
 }
 
-- (void)analyticsSetScreenName:(CDVInvokedUrlCommand*)command {
+- (void)analyticsSetScreenName:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* name = [command.arguments objectAtIndex:0];
 
@@ -115,7 +115,7 @@
     }];
 }
 
-- (void)analyticsSetUserProperty:(CDVInvokedUrlCommand*)command {
+- (void)analyticsSetUserProperty:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* name = [command.arguments objectAtIndex:0];
     NSString* value = [command.arguments objectAtIndex:1];
@@ -127,7 +127,7 @@
     }];
 }
 
-- (void)crashlyticsTest:(CDVInvokedUrlCommand*)command {
+- (void)crashlyticsTest:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
     [self.commandDelegate runInBackground:^{
@@ -137,17 +137,61 @@
     }];
 }
 
-- (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
-    [self admobRequestInterstitial];
-}
-
-
-- (void)remoteConfigSetup:(CDVInvokedUrlCommand*)command {
+- (void)remoteConfigSetup:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
     [self.commandDelegate runInBackground:^{
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
+}
+
+// INTERSTITIALS AD EVENTS
+- (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    [pluginResult setKeepCallbackAsBool:true];
+
+    [self admobRequestInterstitial];
+
+    [self.commandDelegate runInBackground:^{
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialClosedCallbackId];
+    }];
+}
+
+- (void)onInterstitialClosed:(CDVInvokedUrlCommand *)command {
+    self.interstitialClosedCallbackId = command.callbackId
+}
+
+
+// REWARDED VIDEO AD EVENTS
+- (void)rewardBasedVideoAdDidClose:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    [pluginResult setKeepCallbackAsBool:true];
+
+    [self admobRequestRewardVideo];
+
+    [self.commandDelegate runInBackground:^{
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoClosedCallbackId];
+    }];
+}
+
+- (void)rewardBasedVideoAdDidCompletePlaying:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    [pluginResult setKeepCallbackAsBool:true];
+
+    [self.commandDelegate runInBackground:^{
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoCompleteCallbackId];
+    }];
+}
+
+- (void)onRewardVideoClosed:(CDVInvokedUrlCommand *)command {
+    self.rewardVideoClosedCallbackId = command.callbackId;
+}
+
+- (void)onRewardVideoComplete:(CDVInvokedUrlCommand *)command {
+    self.rewardVideoCompleteCallbackId = command.callbackId;
 }
 
 @end

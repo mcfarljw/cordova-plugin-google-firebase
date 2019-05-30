@@ -2,16 +2,25 @@ const exec = require('cordova/exec')
 
 module.exports = {
   admob: {
-    setup: function (appId, options, testDevices) {
+    onInterstitialClosed: function (callback) {
+      exec(callback, callback, 'FirebasePlugin', 'onInterstitialClosed', [])
+    },
+    onRewardVideoClosed: function (callback) {
+      exec(callback, callback, 'FirebasePlugin', 'onRewardVideoClosed', [])
+    },
+    onRewardVideoComplete: function (callback) {
+      exec(callback, callback, 'FirebasePlugin', 'onRewardVideoComplete', [])
+    },
+    setup: function (appId, options) {
       options = options || {}
 
       options.interstitialId = options.interstitialId || 'ca-app-pub-3940256099942544/1033173712'
-      options.rewardedVideoId = options.rewardedVideoId || 'ca-app-pub-3940256099942544/5224354917'
+      options.rewardVideoId = options.rewardVideoId || 'ca-app-pub-3940256099942544/5224354917'
       options.testDevices = options.testDevices || []
 
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobSetup', [appId, options.interstitialId, options.rewardedVideoId, options.testDevices])
+          exec(resolve, reject, 'FirebasePlugin', 'admobSetup', [appId, options.interstitialId, options.rewardVideoId, options.testDevices])
         }
       )
     },
@@ -22,10 +31,10 @@ module.exports = {
         }
       )
     },
-    showRewardedVideo: function () {
+    showRewardVideo: function () {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'admobShowRewardedVideo', [])
+          exec(resolve, reject, 'FirebasePlugin', 'admobShowRewardVideo', [])
         }
       )
     }
