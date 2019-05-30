@@ -11,6 +11,7 @@
   "scripts": {
     "publish": "cd plugin && npm publish",
     "setup": "node scripts/setup",
+    "open:android": "open -a /Applications/Android\\ Studio.app test/platforms/android",
     "open:ios": "open test/platforms/ios/Firebase.xcworkspace",
     "test:android": "node scripts/test-android",
     "test:ios": "node scripts/test-ios"
