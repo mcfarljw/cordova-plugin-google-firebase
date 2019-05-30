@@ -9,6 +9,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -27,9 +30,11 @@ public class FirebasePlugin extends CordovaPlugin {
     private Context applicationContext;
     private String applicationId;
     private String interstitialId;
+    private String rewardedVideoId;
     private FirebaseAnalytics mAnalytics;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private InterstitialAd mInterstitialAd;
+    private RewardedVideoAd mRewardedVideoAd;
     private JSONArray mTestDeviceIds;
 
     @Override
@@ -47,15 +52,22 @@ public class FirebasePlugin extends CordovaPlugin {
         if ("admobSetup".equals(action)) {
             String appId = args.getString(0);
             String interstitialId = args.getString(1);
-            JSONArray testDevices = args.getJSONArray(2);
+            String rewardedVideoId = args.getString(2);
+            JSONArray testDevices = args.getJSONArray(3);
 
-            admobSetup(appId, interstitialId, testDevices);
+            admobSetup(appId, interstitialId, rewardedVideoId, testDevices);
 
             return true;
         }
 
         if ("admobShowInterstitial".equals(action)) {
             showInterstitial();
+
+            return true;
+        }
+
+        if ("admobShowRewardedVideo".equals(action)) {
+            showRewardedVideo();
 
             return true;
         }
@@ -128,8 +140,30 @@ public class FirebasePlugin extends CordovaPlugin {
         }
     }
 
-    private Boolean admobCanRequestNewAd() {
-        return !mInterstitialAd.isLoaded() && !mInterstitialAd.isLoading();
+    private class RewardedListener implements RewardedVideoAdListener {
+        @Override
+        public void onRewardedVideoAdLoaded() {}
+
+        @Override
+        public void onRewardedVideoAdOpened() {}
+
+        @Override
+        public void onRewardedVideoStarted() {}
+
+        @Override
+        public void onRewardedVideoAdClosed() { admobRequestNewRewardedVideo(); }
+
+        @Override
+        public void onRewarded(RewardItem rewardItem) {}
+
+        @Override
+        public void onRewardedVideoAdLeftApplication() {}
+
+        @Override
+        public void onRewardedVideoAdFailedToLoad(int i) {}
+
+        @Override
+        public void onRewardedVideoCompleted() {}
     }
 
     private void admobRequestNewInterstitial() {
@@ -146,16 +180,38 @@ public class FirebasePlugin extends CordovaPlugin {
                     Log.e(PLUGIN_NAME, error.getMessage());
                 }
 
-                if (admobCanRequestNewAd()) {
+                if (!mInterstitialAd.isLoaded()) {
                     mInterstitialAd.loadAd(adRequest.build());
                 }
             }
         });
     }
 
-    private void admobSetup(final String appId, final String interstitialId, final JSONArray testDevices) {
+    private void admobRequestNewRewardedVideo() {
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                AdRequest.Builder adRequest = new AdRequest.Builder()
+                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+
+                try {
+                    for (int i = 0; i < mTestDeviceIds.length(); i++) {
+                        adRequest.addTestDevice(mTestDeviceIds.getString(i));
+                    }
+                } catch (JSONException error) {
+                    Log.e(PLUGIN_NAME, error.getMessage());
+                }
+
+                if (!mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.loadAd(rewardedVideoId, adRequest.build());
+                }
+            }
+        });
+    }
+
+    private void admobSetup(final String appId, final String interstitialId, final String rewardedVideoId, final JSONArray testDevices) {
         this.applicationId = appId;
         this.interstitialId = interstitialId;
+        this.rewardedVideoId = rewardedVideoId;
         this.mTestDeviceIds = testDevices;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
@@ -163,12 +219,14 @@ public class FirebasePlugin extends CordovaPlugin {
                 MobileAds.initialize(applicationContext, appId);
 
                 mInterstitialAd = new InterstitialAd(applicationContext);
-
                 mInterstitialAd.setAdUnitId(interstitialId);
-
                 mInterstitialAd.setAdListener(new InterstitialListener());
 
+                mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(applicationContext);
+                mRewardedVideoAd.setRewardedVideoAdListener(new RewardedListener());
+
                 admobRequestNewInterstitial();
+                admobRequestNewRewardedVideo();
             }
         });
     }
@@ -178,6 +236,18 @@ public class FirebasePlugin extends CordovaPlugin {
             public void run() {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
+                } else {
+                    admobRequestNewInterstitial();
+                }
+            }
+        });
+    }
+
+    private void showRewardedVideo() {
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
                 } else {
                     admobRequestNewInterstitial();
                 }

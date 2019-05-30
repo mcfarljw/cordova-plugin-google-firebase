@@ -6,10 +6,13 @@
 @property(nonatomic, strong) NSString *applicationId;
 @property(nonatomic, strong) GADInterstitial *interstitial;
 @property(nonatomic, strong) NSString *interstitialId;
-@property (nonatomic, strong) NSMutableArray *testDevices;
+@property(nonatomic, strong) GADRewardBasedVideoAd *rewardedVideo;
+@property(nonatomic, strong) NSString *rewardedVideoId;
+@property(nonatomic, strong) NSMutableArray *testDevices;
 
 - (void)admobSetup:(CDVInvokedUrlCommand*)command;
 - (void)admobShowInterstitial:(CDVInvokedUrlCommand*)command;
+- (void)admobShowRewardedVideo:(CDVInvokedUrlCommand*)command;
 - (void)analyticsLogEvent:(CDVInvokedUrlCommand*)command;
 - (void)analyticsSetScreenName:(CDVInvokedUrlCommand*)command;
 - (void)analyticsSetUserId:(CDVInvokedUrlCommand*)command;

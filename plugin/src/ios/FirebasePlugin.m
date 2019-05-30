@@ -20,22 +20,30 @@
     }];
 }
 
+- (void)admobRequestRewardedVideo {
+    [self.commandDelegate runInBackground:^{
+        [GADRewardBasedVideoAd sharedInstance].delegate = (id <GADRewardBasedVideoAdDelegate>)self;
+        [[GADRewardBasedVideoAd sharedInstance] loadRequest:[GADRequest request] withAdUnitID:self.rewardedVideoId];
+    }];
+}
+
 - (void)admobSetup:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* appId = [command.arguments objectAtIndex:0];
     NSString* interstitialId = [command.arguments objectAtIndex:1];
-    NSArray* testDevices = [command.arguments objectAtIndex:2];
+    NSString* rewardedVideoId = [command.arguments objectAtIndex:2];
+    NSArray* testDevices = [command.arguments objectAtIndex:3];
 
     if (testDevices && testDevices.count) {
         [self.testDevices addObjectsFromArray:testDevices];
     }
 
-    [GADMobileAds configureWithApplicationID:appId];
-
     self.applicationId = appId;
     self.interstitialId = interstitialId;
+    self.rewardedVideoId = rewardedVideoId;
 
     [self admobRequestInterstitial];
+    [self admobRequestRewardedVideo];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -46,6 +54,18 @@
     [self.commandDelegate runInBackground:^{
         if (self.interstitial.isReady) {
             [self.interstitial presentFromRootViewController:self.viewController];
+        }
+
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+- (void)admobShowRewardedVideo:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+
+    [self.commandDelegate runInBackground:^{
+        if ([[GADRewardBasedVideoAd sharedInstance] isReady]) {
+            [[GADRewardBasedVideoAd sharedInstance] presentFromRootViewController:self.viewController];
         }
 
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
