@@ -79,10 +79,38 @@ module.exports = {
     }
   },
   remoteConfig: {
-    setup: function () {
+    getArray: function (key) {
       return new Promise(
         function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigSetup', [])
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigGetArray', [key])
+        }
+      )
+    },
+    getBoolean: function (key) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigGetBoolean', [key])
+        }
+      )
+    },
+    getNumber: function (key) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigGetNumber', [key])
+        }
+      )
+    },
+    getString: function (key) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigGetString', [key])
+        }
+      )
+    },
+    setup: function (interval) {
+      return new Promise(
+        function (resolve, reject) {
+          exec(resolve, reject, 'FirebasePlugin', 'remoteConfigSetup', [interval || 43200])
         }
       )
     }

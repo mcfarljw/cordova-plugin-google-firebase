@@ -1,4 +1,5 @@
 #import <Cordova/CDVPlugin.h>
+@import FirebaseRemoteConfig;
 @import GoogleMobileAds;
 
 @interface FirebasePlugin : CDVPlugin
@@ -7,6 +8,7 @@
 @property(nonatomic, strong) GADInterstitial *interstitial;
 @property(nonatomic, strong) NSString *interstitialId;
 @property(nonatomic, strong) NSString *interstitialClosedCallbackId;
+@property(nonatomic, strong) FIRRemoteConfig *remoteConfig;
 @property(nonatomic, strong) GADRewardBasedVideoAd *rewardVideo;
 @property(nonatomic, strong) NSString *rewardVideoClosedCallbackId;
 @property(nonatomic, strong) NSString *rewardVideoCompleteCallbackId;
@@ -24,6 +26,11 @@
 - (void)onInterstitialClosed:(CDVInvokedUrlCommand *)command;
 - (void)onRewardVideoClosed:(CDVInvokedUrlCommand *)command;
 - (void)onRewardVideoComplete:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigFetch:(CDVInvokedUrlCommand *)command;
 - (void)remoteConfigSetup:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigGetArray:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigGetBoolean:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigGetNumber:(CDVInvokedUrlCommand *)command;
+- (void)remoteConfigGetString:(CDVInvokedUrlCommand *)command;
 
 @end
