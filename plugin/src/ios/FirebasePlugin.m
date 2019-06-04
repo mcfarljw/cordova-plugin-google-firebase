@@ -34,6 +34,14 @@
     NSString* rewardVideoId = [command.arguments objectAtIndex:2];
     NSArray* testDevices = [command.arguments objectAtIndex:3];
 
+    if (interstitialId == nil) {
+        interstitialId = @"ca-app-pub-3940256099942544/4411468910";
+    }
+
+    if (rewardVideoId == nil) {
+        rewardVideoId = @"ca-app-pub-3940256099942544/1712485313";
+    }
+
     if (testDevices && testDevices.count) {
         [self.testDevices addObjectsFromArray:testDevices];
     }

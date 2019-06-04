@@ -11,13 +11,15 @@ var app = {
       if (window.plugins) {
         if (window.device.platform === 'Android') {
           window.plugins.firebase.admob.setup('ca-app-pub-3940256099942544~3347511713', {
-            interstitialId: 'ca-app-pub-3940256099942544/1033173712'
+            interstitialId: 'ca-app-pub-3940256099942544/1033173712',
+            rewardVideoAd: 'ca-app-pub-3940256099942544/5224354917'
           })
         }
 
         if (window.device.platform === 'iOS') {
           window.plugins.firebase.admob.setup('ca-app-pub-3940256099942544~1458002511', {
-            interstitialId: 'ca-app-pub-3940256099942544/4411468910'
+            interstitialId: 'ca-app-pub-3940256099942544/4411468910',
+            rewardVideoId: 'ca-app-pub-3940256099942544/1712485313'
           })
         }
 
