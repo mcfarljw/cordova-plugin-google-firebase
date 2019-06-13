@@ -36,6 +36,7 @@
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID" />
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </config-file>
 
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
