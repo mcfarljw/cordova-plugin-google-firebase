@@ -148,46 +148,42 @@
 - (void)remoteConfigFetch:(CDVInvokedUrlCommand *)command {
     long expirationDuration = [[command argumentAtIndex:0] longValue];
 
-    [self.commandDelegate runInBackground:^{
-        FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
+    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
 
-        self.remoteConfig = [FIRRemoteConfig remoteConfig];
-        self.remoteConfig.configSettings = remoteConfigSettings;
+    self.remoteConfig = [FIRRemoteConfig remoteConfig];
+    self.remoteConfig.configSettings = remoteConfigSettings;
 
-        [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-            if (status == FIRRemoteConfigFetchStatusSuccess) {
-                [self.remoteConfig activateFetched];
-            } else {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
-            }
+        if (status == FIRRemoteConfigFetchStatusSuccess) {
+            [self.remoteConfig activateFetched];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+        }
 
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 
 - (void)remoteConfigSetup:(CDVInvokedUrlCommand *)command {
     long expirationDuration = [[command argumentAtIndex:0] longValue];
 
-    [self.commandDelegate runInBackground:^{
-        FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
+    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
 
-        self.remoteConfig = [FIRRemoteConfig remoteConfig];
-        self.remoteConfig.configSettings = remoteConfigSettings;
+    self.remoteConfig = [FIRRemoteConfig remoteConfig];
+    self.remoteConfig.configSettings = remoteConfigSettings;
 
-        [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-            if (status == FIRRemoteConfigFetchStatusSuccess) {
-                [self.remoteConfig activateFetched];
-            } else {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
-            }
+        if (status == FIRRemoteConfigFetchStatusSuccess) {
+            [self.remoteConfig activateFetched];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+        }
 
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 }
 

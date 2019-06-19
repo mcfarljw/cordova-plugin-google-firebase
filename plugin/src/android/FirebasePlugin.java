@@ -183,16 +183,20 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private class InterstitialListener extends AdListener {
         @Override
-        public void onAdFailedToLoad(int errorCode) {}
+        public void onAdFailedToLoad(int errorCode) {
+        }
 
         @Override
-        public void onAdLeftApplication() {}
+        public void onAdLeftApplication() {
+        }
 
         @Override
-        public void onAdLoaded() {}
+        public void onAdLoaded() {
+        }
 
         @Override
-        public void onAdOpened() {}
+        public void onAdOpened() {
+        }
 
         @Override
         public void onAdClosed() {
@@ -212,13 +216,16 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private class RewardedListener implements RewardedVideoAdListener {
         @Override
-        public void onRewardedVideoAdLoaded() {}
+        public void onRewardedVideoAdLoaded() {
+        }
 
         @Override
-        public void onRewardedVideoAdOpened() {}
+        public void onRewardedVideoAdOpened() {
+        }
 
         @Override
-        public void onRewardedVideoStarted() {}
+        public void onRewardedVideoStarted() {
+        }
 
         @Override
         public void onRewardedVideoAdClosed() {
@@ -236,13 +243,16 @@ public class FirebasePlugin extends CordovaPlugin {
         }
 
         @Override
-        public void onRewarded(RewardItem rewardItem) {}
+        public void onRewarded(RewardItem rewardItem) {
+        }
 
         @Override
-        public void onRewardedVideoAdLeftApplication() {}
+        public void onRewardedVideoAdLeftApplication() {
+        }
 
         @Override
-        public void onRewardedVideoAdFailedToLoad(int i) {}
+        public void onRewardedVideoAdFailedToLoad(int i) {
+        }
 
         @Override
         public void onRewardedVideoCompleted() {
@@ -388,30 +398,26 @@ public class FirebasePlugin extends CordovaPlugin {
     }
 
     private void remoteConfigSetup(final long interval, final CallbackContext callbackContext) {
-        cordova.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder()
-                        .setFetchTimeoutInSeconds(interval)
-                        .build();
+        FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder()
+                .setFetchTimeoutInSeconds(interval)
+                .build();
 
-                mRemoteConfig = FirebaseRemoteConfig.getInstance();
-                mRemoteConfig.setDefaults(Collections.emptyMap());
-                mRemoteConfig.setConfigSettingsAsync(settings);
-                mRemoteConfig.fetchAndActivate()
-                        .addOnCompleteListener(cordova.getActivity(), new OnCompleteListener<Boolean>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Boolean> task) {
-                                PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mRemoteConfig.setDefaults(Collections.emptyMap());
+        mRemoteConfig.setConfigSettingsAsync(settings);
+        mRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(cordova.getActivity(), new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
 
-                                if (task.isSuccessful()) {
-                                    pluginResult = new PluginResult(PluginResult.Status.OK);
-                                }
+                        if (task.isSuccessful()) {
+                            pluginResult = new PluginResult(PluginResult.Status.OK);
+                        }
 
-                                callbackContext.sendPluginResult(pluginResult);
-                            }
-                        });
-            }
-        });
+                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                });
     }
 
     private void remoteConfigGetArray(final String key, final CallbackContext callbackContext) {
@@ -456,7 +462,7 @@ public class FirebasePlugin extends CordovaPlugin {
                 FirebaseRemoteConfigValue value = mRemoteConfig.getValue(key);
 
                 if (value != null) {
-                    pluginResult = new PluginResult(PluginResult.Status.OK, (float)value.asDouble());
+                    pluginResult = new PluginResult(PluginResult.Status.OK, (float) value.asDouble());
                 }
 
                 callbackContext.sendPluginResult(pluginResult);
