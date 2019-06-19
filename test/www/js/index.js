@@ -12,7 +12,7 @@ var app = {
         if (window.device.platform === 'Android') {
           window.plugins.firebase.admob.setup('ca-app-pub-3940256099942544~3347511713', {
             interstitialId: 'ca-app-pub-3940256099942544/1033173712',
-            rewardVideoAd: 'ca-app-pub-3940256099942544/5224354917'
+            rewardVideoId: 'ca-app-pub-3940256099942544/5224354917'
           })
         }
 
@@ -41,6 +41,24 @@ var app = {
 
         window.plugins.firebase.admob.onRewardVideoComplete(function (callback) {
           console.log('EVENT', 'reward video complete')
+        })
+
+        window.plugins.firebase.remoteConfig.setup().then(function () {
+          window.plugins.firebase.remoteConfig.getArray('TestArray').then(function (value) {
+            $('#config-array').text(value)
+          })
+
+          window.plugins.firebase.remoteConfig.getBoolean('TestBoolean').then(function (value) {
+            $('#config-boolean').text(value)
+          })
+
+          window.plugins.firebase.remoteConfig.getNumber('TestNumber').then(function (value) {
+            $('#config-number').text(value)
+          })
+
+          window.plugins.firebase.remoteConfig.getString('TestString').then(function (value) {
+            $('#config-string').text(value)
+          })
         })
       }
     }
