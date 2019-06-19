@@ -2,8 +2,9 @@ package com.jernung.plugins.firebase;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
