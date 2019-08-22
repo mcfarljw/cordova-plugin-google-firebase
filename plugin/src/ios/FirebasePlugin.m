@@ -105,22 +105,18 @@
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* userId = [command.arguments objectAtIndex:0];
 
-    [self.commandDelegate runInBackground:^{
-        [FIRAnalytics setUserID:userId];
+    [FIRAnalytics setUserID:userId];
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)analyticsSetScreenName:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* name = [command.arguments objectAtIndex:0];
 
-    [self.commandDelegate runInBackground:^{
-        [FIRAnalytics setScreenName:name screenClass:NULL];
+    [FIRAnalytics setScreenName:name screenClass:NULL];
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)analyticsSetUserProperty:(CDVInvokedUrlCommand *)command {
@@ -128,11 +124,9 @@
     NSString* name = [command.arguments objectAtIndex:0];
     NSString* value = [command.arguments objectAtIndex:1];
 
-    [self.commandDelegate runInBackground:^{
-        [FIRAnalytics setUserPropertyString:name forName:value];
+    [FIRAnalytics setUserPropertyString:name forName:value];
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)crashlyticsTest:(CDVInvokedUrlCommand *)command {

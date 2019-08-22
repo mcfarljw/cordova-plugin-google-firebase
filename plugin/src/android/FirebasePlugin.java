@@ -371,27 +371,15 @@ public class FirebasePlugin extends CordovaPlugin {
     }
 
     private void analyticsSetScreenName(final String name) {
-        cordova.getThreadPool().execute(new Runnable() {
-            public void run() {
-                mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
-            }
-        });
+        mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
     }
 
     private void analyticsSetUserId(final String id) {
-        cordova.getThreadPool().execute(new Runnable() {
-            public void run() {
-                mAnalytics.setUserId(id);
-            }
-        });
+        mAnalytics.setUserId(id);
     }
 
     private void analyticsSetUserProperty(final String name, final String value) {
-        cordova.getThreadPool().execute(new Runnable() {
-            public void run() {
-                mAnalytics.setUserProperty(name, value);
-            }
-        });
+        mAnalytics.setUserProperty(name, value);
     }
 
     private void crashlyticsTest() {
