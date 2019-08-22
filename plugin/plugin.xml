@@ -81,10 +81,10 @@
       <pods>
         <pod name="Crashlytics" spec="~> 3.13.4" />
         <pod name="Fabric" spec="~> 1.10.2" />
-        <pod name="Firebase/AdMob" spec="~> 6.5.0" />
-        <pod name="Firebase/Analytics" spec="~> 6.5.0" />
-        <pod name="Firebase/Performance" spec="~> 6.5.0" />
-        <pod name="Firebase/RemoteConfig" spec="~> 6.5.0" />
+        <pod name="Firebase/AdMob" spec="~> 6.7.0" />
+        <pod name="Firebase/Analytics" spec="~> 6.7.0" />
+        <pod name="Firebase/Performance" spec="~> 6.7.0" />
+        <pod name="Firebase/RemoteConfig" spec="~> 6.7.0" />
       </pods>
     </podspec>
 
