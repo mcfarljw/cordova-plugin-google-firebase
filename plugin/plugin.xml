@@ -79,12 +79,12 @@
         <source url="https://github.com/CocoaPods/Specs.git" />
       </config>
       <pods>
-        <pod name="Crashlytics" spec="~> 3.13.4" />
+        <pod name="Crashlytics" spec="~> 3.14.0" />
         <pod name="Fabric" spec="~> 1.10.2" />
-        <pod name="Firebase/AdMob" spec="~> 6.7.0" />
-        <pod name="Firebase/Analytics" spec="~> 6.7.0" />
-        <pod name="Firebase/Performance" spec="~> 6.7.0" />
-        <pod name="Firebase/RemoteConfig" spec="~> 6.7.0" />
+        <pod name="Firebase/AdMob" spec="~> 6.8.1" />
+        <pod name="Firebase/Analytics" spec="~> 6.8.1" />
+        <pod name="Firebase/Performance" spec="~> 6.8.1" />
+        <pod name="Firebase/RemoteConfig" spec="~> 6.8.1" />
       </pods>
     </podspec>
 
