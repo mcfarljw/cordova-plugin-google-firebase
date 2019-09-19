@@ -1,6 +1,5 @@
 #import <Cordova/CDVPlugin.h>
-@import FirebaseRemoteConfig;
-@import GoogleMobileAds;
+@import Firebase;
 
 @interface FirebasePlugin : CDVPlugin
 
