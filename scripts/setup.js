@@ -13,5 +13,5 @@ emptyDirSync(`${root}/test/plugins`)
 shell.cd(`${root}/test`)
 
 // add platforms
-shell.exec('cordova platform add android@8.0.0')
+shell.exec('cordova platform add android@8.1.0')
 shell.exec('cordova platform add ios@5.0.1')
