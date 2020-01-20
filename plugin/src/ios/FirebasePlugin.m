@@ -140,19 +140,12 @@
 }
 
 - (void)remoteConfigFetch:(CDVInvokedUrlCommand *)command {
-    long expirationDuration = [[command argumentAtIndex:0] longValue];
-
-    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
-
-    self.remoteConfig = [FIRRemoteConfig remoteConfig];
-    self.remoteConfig.configSettings = remoteConfigSettings;
+    long expirationDuration = [[command argumentAtIndex:43200] longValue];
 
     [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-        if (status == FIRRemoteConfigFetchStatusSuccess) {
-            [self.remoteConfig activateFetched];
-        } else {
+        if (error) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
         }
 
@@ -161,19 +154,18 @@
 }
 
 - (void)remoteConfigSetup:(CDVInvokedUrlCommand *)command {
-    long expirationDuration = [[command argumentAtIndex:0] longValue];
+    long expirationDuration = [[command argumentAtIndex:43200] longValue];
 
-    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] initWithDeveloperModeEnabled:YES];
+    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] init];
 
     self.remoteConfig = [FIRRemoteConfig remoteConfig];
     self.remoteConfig.configSettings = remoteConfigSettings;
+    self.remoteConfig.configSettings.minimumFetchInterval = expirationDuration;
 
-    [self.remoteConfig fetchWithExpirationDuration:expirationDuration completionHandler:^(FIRRemoteConfigFetchStatus status, NSError *error) {
+    [self.remoteConfig fetchAndActivateWithCompletionHandler:^(FIRRemoteConfigFetchAndActivateStatus status, NSError * _Nullable error) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-        if (status == FIRRemoteConfigFetchStatusSuccess) {
-            [self.remoteConfig activateFetched];
-        } else {
+        if (error) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
         }
 
