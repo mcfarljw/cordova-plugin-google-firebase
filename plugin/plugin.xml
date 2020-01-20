@@ -42,9 +42,9 @@
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
 
     <framework src="com.google.firebase:firebase-ads:18.3.0" />
-    <framework src="com.google.firebase:firebase-analytics:17.2.1" />
+    <framework src="com.google.firebase:firebase-analytics:17.2.2" />
     <framework src="com.google.firebase:firebase-config:19.1.0" />
-    <framework src="com.google.firebase:firebase-perf:19.0.4" />
+    <framework src="com.google.firebase:firebase-perf:19.0.5" />
 
     <framework custom="true" src="build.gradle" type="gradleReference" />
 
