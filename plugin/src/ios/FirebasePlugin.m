@@ -14,8 +14,6 @@
 
         GADRequest *request = [GADRequest request];
 
-        request.testDevices = self.testDevices;
-
         [self.interstitial loadRequest:request];
     }];
 }
@@ -43,7 +41,7 @@
     }
 
     if (testDevices && testDevices.count) {
-        [self.testDevices addObjectsFromArray:testDevices];
+        GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = testDevices;
     }
 
     self.applicationId = appId;
