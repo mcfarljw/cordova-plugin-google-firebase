@@ -14,4 +14,4 @@ shell.cd(`${root}/test`)
 
 // add platforms
 shell.exec('cordova platform add android@8.1.0')
-shell.exec('cordova platform add ios@5.0.1')
+shell.exec('cordova platform add ios@5.1.1')
