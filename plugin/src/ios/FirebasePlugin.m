@@ -127,16 +127,6 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)crashlyticsTest:(CDVInvokedUrlCommand *)command {
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-
-    [self.commandDelegate runInBackground:^{
-        [[Crashlytics sharedInstance] crash];
-
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
-}
-
 - (void)remoteConfigFetch:(CDVInvokedUrlCommand *)command {
     long expirationDuration = [[command argumentAtIndex:43200] longValue];
 

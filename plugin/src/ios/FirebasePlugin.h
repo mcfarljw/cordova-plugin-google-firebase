@@ -21,7 +21,6 @@
 - (void)analyticsSetScreenName:(CDVInvokedUrlCommand *)command;
 - (void)analyticsSetUserId:(CDVInvokedUrlCommand *)command;
 - (void)analyticsSetUserProperty:(CDVInvokedUrlCommand *)command;
-- (void)crashlyticsTest:(CDVInvokedUrlCommand *)command;
 - (void)onInterstitialClosed:(CDVInvokedUrlCommand *)command;
 - (void)onRewardVideoClosed:(CDVInvokedUrlCommand *)command;
 - (void)onRewardVideoComplete:(CDVInvokedUrlCommand *)command;

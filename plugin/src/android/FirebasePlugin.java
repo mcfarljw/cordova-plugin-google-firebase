@@ -6,7 +6,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -17,6 +16,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
@@ -42,6 +42,7 @@ public class FirebasePlugin extends CordovaPlugin {
     private CallbackContext rewardVideoClosedCallback;
     private CallbackContext rewardVideoCompleteCallback;
     private FirebaseAnalytics mAnalytics;
+    private FirebaseCrashlytics mCrashlytics;
     private InterstitialAd mInterstitialAd;
     private FirebaseRemoteConfig mRemoteConfig;
     private RewardedVideoAd mRewardVideoAd;
@@ -53,6 +54,7 @@ public class FirebasePlugin extends CordovaPlugin {
 
         applicationContext = cordova.getActivity().getApplicationContext();
         mAnalytics = FirebaseAnalytics.getInstance(applicationContext);
+        mCrashlytics = FirebaseCrashlytics.getInstance();
         mTestDeviceIds = new JSONArray();
     }
 
@@ -111,12 +113,6 @@ public class FirebasePlugin extends CordovaPlugin {
             String value = args.getString(1);
 
             this.analyticsSetUserProperty(name, value);
-
-            return true;
-        }
-
-        if ("crashlyticsTest".equals(action)) {
-            crashlyticsTest();
 
             return true;
         }
@@ -380,10 +376,6 @@ public class FirebasePlugin extends CordovaPlugin {
 
     private void analyticsSetUserProperty(final String name, final String value) {
         mAnalytics.setUserProperty(name, value);
-    }
-
-    private void crashlyticsTest() {
-        Crashlytics.getInstance().crash();
     }
 
     private void remoteConfigSetup(final long interval, final CallbackContext callbackContext) {

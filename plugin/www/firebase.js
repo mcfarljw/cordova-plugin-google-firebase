@@ -69,15 +69,7 @@ module.exports = {
       )
     }
   },
-  crashlytics: {
-    test: function () {
-      return new Promise(
-        function (resolve, reject) {
-          exec(resolve, reject, 'FirebasePlugin', 'crashlyticsTest', [])
-        }
-      )
-    }
-  },
+  crashlytics: {},
   remoteConfig: {
     getArray: function (key) {
       return new Promise(
