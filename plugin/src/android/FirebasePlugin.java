@@ -200,30 +200,30 @@ public class FirebasePlugin extends CordovaPlugin {
   }
 
   private void admobRequestNewInterstitial() {
-    cordova.getActivity().runOnUiThread(() -> {
-      AdRequest.Builder adRequest = new AdRequest.Builder();
+    if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+      return;
+    }
 
-      if (!mInterstitialAd.isLoaded()) {
-        mInterstitialAd.loadAd(adRequest.build());
-      }
+    cordova.getActivity().runOnUiThread(() -> {
+      mInterstitialAd.loadAd(new AdRequest.Builder().build());
     });
   }
 
   private void admobRequestNewRewardedVideo() {
-    cordova.getActivity().runOnUiThread(() -> {
-      AdRequest.Builder adRequest = new AdRequest.Builder();
+    if (mRewardVideoAd != null && mRewardVideoAd.isLoaded()) {
+      return;
+    }
 
-      RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+    cordova.getActivity().runOnUiThread(() -> {
+      mRewardVideoAd = new RewardedAd(applicationContext, rewardVideoId);
+
+      mRewardVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
         @Override
         public void onRewardedAdLoaded() {}
 
         @Override
         public void onRewardedAdFailedToLoad(int errorCode) {}
-      };
-
-      if (!mRewardVideoAd.isLoaded()) {
-        mRewardVideoAd.loadAd(adRequest.build(), adLoadCallback);
-      }
+      });
     });
   }
 
@@ -235,8 +235,6 @@ public class FirebasePlugin extends CordovaPlugin {
       mInterstitialAd = new InterstitialAd(applicationContext);
       mInterstitialAd.setAdUnitId(interstitialId);
       mInterstitialAd.setAdListener(new InterstitialListener());
-
-      mRewardVideoAd = new RewardedAd(applicationContext, rewardVideoId);
 
       admobRequestNewInterstitial();
       admobRequestNewRewardedVideo();
