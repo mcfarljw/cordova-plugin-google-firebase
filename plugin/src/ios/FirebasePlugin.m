@@ -20,8 +20,16 @@
 
 - (void)admobRequestRewardVideo {
     [self.commandDelegate runInBackground:^{
-        [GADRewardBasedVideoAd sharedInstance].delegate = (id <GADRewardBasedVideoAdDelegate>)self;
-        [[GADRewardBasedVideoAd sharedInstance] loadRequest:[GADRequest request] withAdUnitID:self.rewardVideoId];
+        self.rewardVideo = [[GADRewardedAd alloc] initWithAdUnitID:self.rewardVideoId];
+
+        GADRequest *request = [GADRequest request];
+        [self.rewardVideo loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
+          if (error) {
+            NSLog(@"REWARDED: unable to load");
+          } else {
+            NSLog(@"REWARDED: loaded");
+          }
+        }];
     }];
 }
 
@@ -57,25 +65,23 @@
 - (void)admobShowInterstitial:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-    [self.commandDelegate runInBackground:^{
-        if (self.interstitial.isReady) {
-            [self.interstitial presentFromRootViewController:self.viewController];
-        }
+    if (self.interstitial.isReady) {
+        [self.interstitial presentFromRootViewController:self.viewController];
+    }
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)admobShowRewardVideo:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-    [self.commandDelegate runInBackground:^{
-        if ([[GADRewardBasedVideoAd sharedInstance] isReady]) {
-            [[GADRewardBasedVideoAd sharedInstance] presentFromRootViewController:self.viewController];
-        }
+    if (self.rewardVideo.isReady) {
+        [self.rewardVideo presentFromRootViewController:self.viewController delegate: (id <GADRewardedAdDelegate>)self];
+    } else {
+      NSLog(@"REWARDED: not ready");
+    }
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)analyticsLogEvent:(CDVInvokedUrlCommand *)command {
@@ -223,6 +229,7 @@
 }
 
 // INTERSTITIALS AD EVENTS
+
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
@@ -241,27 +248,32 @@
 
 
 // REWARDED VIDEO AD EVENTS
-- (void)rewardBasedVideoAdDidClose:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-    [pluginResult setKeepCallbackAsBool:true];
+- (void)rewardedAd:(GADRewardedAd *)rewardedAd userDidEarnReward:(GADAdReward *)reward {
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-    [self admobRequestRewardVideo];
+  [pluginResult setKeepCallbackAsBool:true];
 
-    [self.commandDelegate runInBackground:^{
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoClosedCallbackId];
-    }];
+  [self.commandDelegate runInBackground:^{
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoCompleteCallbackId];
+  }];
 }
 
-- (void)rewardBasedVideoAdDidCompletePlaying:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+- (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {}
 
-    [pluginResult setKeepCallbackAsBool:true];
+- (void)rewardedAdDidDismiss:(GADRewardedAd *)rewardedAd {
+  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 
-    [self.commandDelegate runInBackground:^{
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoCompleteCallbackId];
-    }];
+  [pluginResult setKeepCallbackAsBool:true];
+
+  [self admobRequestRewardVideo];
+
+  [self.commandDelegate runInBackground:^{
+      [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardVideoClosedCallbackId];
+  }];
 }
+
+- (void)rewardedAdDidPresent:(GADRewardedAd *)rewardedAd {}
 
 - (void)onRewardVideoClosed:(CDVInvokedUrlCommand *)command {
     self.rewardVideoClosedCallbackId = command.callbackId;
