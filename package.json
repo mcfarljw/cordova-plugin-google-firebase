@@ -9,6 +9,8 @@
     "url": "https://github.com/mcfarljw/cordova-plugin-google-firebase"
   },
   "scripts": {
+    "build:android": "node scripts/build-android",
+    "build:ios": "node scripts/build-ios",
     "publish": "cd plugin && npm publish",
     "setup": "node scripts/setup",
     "open:android": "open -a /Applications/Android\\ Studio.app test/platforms/android",
