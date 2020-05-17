@@ -99,7 +99,11 @@
             NSError *error = nil;
             NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:configValue.dataValue options:kNilOptions error:&error];
 
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:jsonArray];
+            if (jsonArray == nil) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:@[]];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:jsonArray];
+            }
         }
 
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
