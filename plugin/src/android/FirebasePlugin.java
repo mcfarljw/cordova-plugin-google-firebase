@@ -4,17 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -34,20 +23,10 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private static final String PLUGIN_NAME = "FirebasePlugin";
 
-  private String applicationId;
-  private String interstitialId;
-  private String rewardVideoId;
-
   private Context applicationContext;
-  private CallbackContext interstitialClosedCallback;
-  private CallbackContext rewardVideoClosedCallback;
-  private CallbackContext rewardVideoCompleteCallback;
   private FirebaseAnalytics mAnalytics;
   private FirebaseCrashlytics mCrashlytics;
-  private InterstitialAd mInterstitialAd;
   private FirebaseRemoteConfig mRemoteConfig;
-  private RewardedAd mRewardVideoAd;
-  private Boolean testing;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -60,29 +39,6 @@ public class FirebasePlugin extends CordovaPlugin {
 
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-    if ("admobSetup".equals(action)) {
-      String appId = args.getString(0);
-      String interstitialId = args.getString(1);
-      String rewardedVideoId = args.getString(2);
-      Boolean testing = args.getBoolean(3);
-
-      this.admobSetup(appId, interstitialId, rewardedVideoId, testing);
-
-      return true;
-    }
-
-    if ("admobShowInterstitial".equals(action)) {
-      this.showInterstitial();
-
-      return true;
-    }
-
-    if ("admobShowRewardVideo".equals(action)) {
-      this.showRewardVideo();
-
-      return true;
-    }
-
     if ("analyticsLogEvent".equals(action)) {
       String name = args.getString(0);
       JSONObject params = args.getJSONObject(1);
@@ -113,24 +69,6 @@ public class FirebasePlugin extends CordovaPlugin {
       String value = args.getString(1);
 
       this.analyticsSetUserProperty(name, value);
-
-      return true;
-    }
-
-    if ("onInterstitialClosed".equals(action)) {
-      this.interstitialClosedCallback = callbackContext;
-
-      return true;
-    }
-
-    if ("onRewardVideoClosed".equals(action)) {
-      this.rewardVideoClosedCallback = callbackContext;
-
-      return true;
-    }
-
-    if ("onRewardVideoComplete".equals(action)) {
-      this.rewardVideoCompleteCallback = callbackContext;
 
       return true;
     }
@@ -176,125 +114,6 @@ public class FirebasePlugin extends CordovaPlugin {
     }
 
     return false;
-  }
-
-  private class InterstitialListener extends AdListener {
-    @Override
-    public void onAdFailedToLoad(int errorCode) {}
-
-    @Override
-    public void onAdLeftApplication() {}
-
-    @Override
-    public void onAdLoaded() {}
-
-    @Override
-    public void onAdOpened() {}
-
-    @Override
-    public void onAdClosed() {
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
-
-      pluginResult.setKeepCallback(true);
-
-      admobRequestNewInterstitial();
-
-      cordova.getActivity().runOnUiThread(() -> interstitialClosedCallback.sendPluginResult(pluginResult));
-    }
-  }
-
-  private void admobRequestNewInterstitial() {
-    if (this.mInterstitialAd != null && this.mInterstitialAd.isLoaded()) {
-      return;
-    }
-
-    cordova.getActivity().runOnUiThread(() -> this.mInterstitialAd.loadAd(new AdRequest.Builder().build()));
-  }
-
-  private void admobRequestNewRewardedVideo() {
-    if (this.mRewardVideoAd != null && this.mRewardVideoAd.isLoaded()) {
-      return;
-    }
-
-    cordova.getActivity().runOnUiThread(() -> {
-      mRewardVideoAd = new RewardedAd(this.applicationContext, this.rewardVideoId);
-
-      mRewardVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
-        @Override
-        public void onRewardedAdLoaded() {}
-
-        @Override
-        public void onRewardedAdFailedToLoad(int errorCode) {}
-      });
-    });
-  }
-
-  private void admobSetup(final String appId, final String interstitialId, final String rewardVideoId, final Boolean testing) {
-    this.applicationId = appId;
-    this.interstitialId = interstitialId;
-    this.rewardVideoId = rewardVideoId;
-    this.testing = testing;
-
-    if (this.testing) {
-      this.applicationId = "ca-app-pub-3940256099942544~3347511713";
-      this.interstitialId = "ca-app-pub-3940256099942544/1033173712";
-      this.rewardVideoId = "ca-app-pub-3940256099942544/5224354917";
-    }
-
-    cordova.getActivity().runOnUiThread(() -> MobileAds.initialize(this.applicationContext, (InitializationStatus initializationStatus) -> {
-      this.mInterstitialAd = new InterstitialAd(this.applicationContext);
-      this.mInterstitialAd.setAdUnitId(this.interstitialId);
-      this.mInterstitialAd.setAdListener(new InterstitialListener());
-
-      this.admobRequestNewInterstitial();
-      this.admobRequestNewRewardedVideo();
-    }));
-  }
-
-  private void showInterstitial() {
-    cordova.getActivity().runOnUiThread(() -> {
-      if (this.mInterstitialAd.isLoaded()) {
-        this.mInterstitialAd.show();
-      } else {
-        this.admobRequestNewInterstitial();
-      }
-    });
-  }
-
-  private void showRewardVideo() {
-    cordova.getActivity().runOnUiThread(() -> {
-      if (this.mRewardVideoAd.isLoaded()) {
-        this.mRewardVideoAd.show(cordova.getActivity(), new RewardedAdCallback() {
-          @Override
-          public void onRewardedAdOpened() {}
-
-          @Override
-          public void onRewardedAdClosed() {
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
-
-            pluginResult.setKeepCallback(true);
-
-            admobRequestNewRewardedVideo();
-
-            cordova.getActivity().runOnUiThread(() -> rewardVideoClosedCallback.sendPluginResult(pluginResult));
-          }
-
-          @Override
-          public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
-
-            pluginResult.setKeepCallback(true);
-
-            cordova.getActivity().runOnUiThread(() -> rewardVideoCompleteCallback.sendPluginResult(pluginResult));
-          }
-
-          @Override
-          public void onRewardedAdFailedToShow(int errorCode) {}
-        });
-      } else {
-        this.admobRequestNewInterstitial();
-      }
-    });
   }
 
   private void analyticsLogEvent(final String name, final JSONObject params) {
