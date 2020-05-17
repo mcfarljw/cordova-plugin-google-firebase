@@ -34,10 +34,12 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private static final String PLUGIN_NAME = "FirebasePlugin";
 
-  private Context applicationContext;
   private String applicationId;
-  private CallbackContext interstitialClosedCallback;
+  private String interstitialId;
   private String rewardVideoId;
+
+  private Context applicationContext;
+  private CallbackContext interstitialClosedCallback;
   private CallbackContext rewardVideoClosedCallback;
   private CallbackContext rewardVideoCompleteCallback;
   private FirebaseAnalytics mAnalytics;
@@ -45,6 +47,7 @@ public class FirebasePlugin extends CordovaPlugin {
   private InterstitialAd mInterstitialAd;
   private FirebaseRemoteConfig mRemoteConfig;
   private RewardedAd mRewardVideoAd;
+  private Boolean testing;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -61,8 +64,9 @@ public class FirebasePlugin extends CordovaPlugin {
       String appId = args.getString(0);
       String interstitialId = args.getString(1);
       String rewardedVideoId = args.getString(2);
+      Boolean testing = args.getBoolean(3);
 
-      this.admobSetup(appId, interstitialId, rewardedVideoId);
+      this.admobSetup(appId, interstitialId, rewardedVideoId, testing);
 
       return true;
     }
@@ -200,22 +204,20 @@ public class FirebasePlugin extends CordovaPlugin {
   }
 
   private void admobRequestNewInterstitial() {
-    if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+    if (this.mInterstitialAd != null && this.mInterstitialAd.isLoaded()) {
       return;
     }
 
-    cordova.getActivity().runOnUiThread(() -> {
-      mInterstitialAd.loadAd(new AdRequest.Builder().build());
-    });
+    cordova.getActivity().runOnUiThread(() -> this.mInterstitialAd.loadAd(new AdRequest.Builder().build()));
   }
 
   private void admobRequestNewRewardedVideo() {
-    if (mRewardVideoAd != null && mRewardVideoAd.isLoaded()) {
+    if (this.mRewardVideoAd != null && this.mRewardVideoAd.isLoaded()) {
       return;
     }
 
     cordova.getActivity().runOnUiThread(() -> {
-      mRewardVideoAd = new RewardedAd(applicationContext, rewardVideoId);
+      mRewardVideoAd = new RewardedAd(this.applicationContext, this.rewardVideoId);
 
       mRewardVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
         @Override
@@ -227,65 +229,70 @@ public class FirebasePlugin extends CordovaPlugin {
     });
   }
 
-  private void admobSetup(final String appId, final String interstitialId, final String rewardVideoId) {
+  private void admobSetup(final String appId, final String interstitialId, final String rewardVideoId, final Boolean testing) {
     this.applicationId = appId;
+    this.interstitialId = interstitialId;
     this.rewardVideoId = rewardVideoId;
+    this.testing = testing;
 
-    cordova.getActivity().runOnUiThread(() -> MobileAds.initialize(applicationContext, (InitializationStatus initializationStatus) -> {
-      mInterstitialAd = new InterstitialAd(applicationContext);
-      mInterstitialAd.setAdUnitId(interstitialId);
-      mInterstitialAd.setAdListener(new InterstitialListener());
+    if (this.testing) {
+      this.applicationId = "ca-app-pub-3940256099942544~3347511713";
+      this.interstitialId = "ca-app-pub-3940256099942544/1033173712";
+      this.rewardVideoId = "ca-app-pub-3940256099942544/5224354917";
+    }
 
-      admobRequestNewInterstitial();
-      admobRequestNewRewardedVideo();
+    cordova.getActivity().runOnUiThread(() -> MobileAds.initialize(this.applicationContext, (InitializationStatus initializationStatus) -> {
+      this.mInterstitialAd = new InterstitialAd(this.applicationContext);
+      this.mInterstitialAd.setAdUnitId(this.interstitialId);
+      this.mInterstitialAd.setAdListener(new InterstitialListener());
+
+      this.admobRequestNewInterstitial();
+      this.admobRequestNewRewardedVideo();
     }));
   }
 
   private void showInterstitial() {
     cordova.getActivity().runOnUiThread(() -> {
-      if (mInterstitialAd.isLoaded()) {
-        mInterstitialAd.show();
+      if (this.mInterstitialAd.isLoaded()) {
+        this.mInterstitialAd.show();
       } else {
-        admobRequestNewInterstitial();
+        this.admobRequestNewInterstitial();
       }
     });
   }
 
   private void showRewardVideo() {
     cordova.getActivity().runOnUiThread(() -> {
-      RewardedAdCallback adCallback = new RewardedAdCallback() {
-        @Override
-        public void onRewardedAdOpened() {}
+      if (this.mRewardVideoAd.isLoaded()) {
+        this.mRewardVideoAd.show(cordova.getActivity(), new RewardedAdCallback() {
+          @Override
+          public void onRewardedAdOpened() {}
 
-        @Override
-        public void onRewardedAdClosed() {
-          PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+          @Override
+          public void onRewardedAdClosed() {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
 
-          pluginResult.setKeepCallback(true);
+            pluginResult.setKeepCallback(true);
 
-          admobRequestNewRewardedVideo();
+            admobRequestNewRewardedVideo();
 
-          cordova.getActivity().runOnUiThread(() -> rewardVideoClosedCallback.sendPluginResult(pluginResult));
-        }
+            cordova.getActivity().runOnUiThread(() -> rewardVideoClosedCallback.sendPluginResult(pluginResult));
+          }
 
-        @Override
-        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-          PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+          @Override
+          public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
 
-          pluginResult.setKeepCallback(true);
+            pluginResult.setKeepCallback(true);
 
-          cordova.getActivity().runOnUiThread(() -> rewardVideoCompleteCallback.sendPluginResult(pluginResult));
-        }
+            cordova.getActivity().runOnUiThread(() -> rewardVideoCompleteCallback.sendPluginResult(pluginResult));
+          }
 
-        @Override
-        public void onRewardedAdFailedToShow(int errorCode) {}
-      };
-
-
-      if (mRewardVideoAd.isLoaded()) {
-        mRewardVideoAd.show(cordova.getActivity(), adCallback);
+          @Override
+          public void onRewardedAdFailedToShow(int errorCode) {}
+        });
       } else {
-        admobRequestNewInterstitial();
+        this.admobRequestNewInterstitial();
       }
     });
   }
@@ -294,22 +301,22 @@ public class FirebasePlugin extends CordovaPlugin {
     try {
       final Bundle paramBundle = PluginUtils.jsonToBundle(params);
 
-      cordova.getThreadPool().execute(() -> mAnalytics.logEvent(name, paramBundle));
+      cordova.getThreadPool().execute(() -> this.mAnalytics.logEvent(name, paramBundle));
     } catch (Exception error) {
       Log.e(PLUGIN_NAME, error.getMessage());
     }
   }
 
   private void analyticsSetScreenName(final String name) {
-    mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
+    this.mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
   }
 
   private void analyticsSetUserId(final String id) {
-    mAnalytics.setUserId(id);
+    this.mAnalytics.setUserId(id);
   }
 
   private void analyticsSetUserProperty(final String name, final String value) {
-    mAnalytics.setUserProperty(name, value);
+    this.mAnalytics.setUserProperty(name, value);
   }
 
   private void remoteConfigSetup(final long interval, final CallbackContext callbackContext) {
@@ -317,9 +324,9 @@ public class FirebasePlugin extends CordovaPlugin {
       .setFetchTimeoutInSeconds(interval)
       .build();
 
-    mRemoteConfig = FirebaseRemoteConfig.getInstance();
-    mRemoteConfig.setConfigSettingsAsync(settings);
-    mRemoteConfig.fetchAndActivate()
+    this.mRemoteConfig = FirebaseRemoteConfig.getInstance();
+    this.mRemoteConfig.setConfigSettingsAsync(settings);
+    this.mRemoteConfig.fetchAndActivate()
       .addOnCompleteListener(cordova.getActivity(), task -> {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
 
@@ -333,8 +340,8 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private void remoteConfigGetArray(final String key, final CallbackContext callbackContext) {
     cordova.getThreadPool().execute(() -> {
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
-      FirebaseRemoteConfigValue value = mRemoteConfig.getValue(key);
+      FirebaseRemoteConfigValue value = this.mRemoteConfig.getValue(key);
+      PluginResult pluginResult;
 
       try {
         String byteString = new String(value.asByteArray());
@@ -343,6 +350,8 @@ public class FirebasePlugin extends CordovaPlugin {
         pluginResult = new PluginResult(PluginResult.Status.OK, byteArray);
       } catch (JSONException error) {
         Log.d(PLUGIN_NAME, error.getMessage());
+
+        pluginResult = new PluginResult(PluginResult.Status.OK, new JSONArray());
       }
 
       callbackContext.sendPluginResult(pluginResult);
@@ -351,12 +360,8 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private void remoteConfigGetBoolean(final String key, final CallbackContext callbackContext) {
     cordova.getThreadPool().execute(() -> {
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
-      FirebaseRemoteConfigValue value = mRemoteConfig.getValue(key);
-
-      if (value != null) {
-        pluginResult = new PluginResult(PluginResult.Status.OK, value.asBoolean());
-      }
+      FirebaseRemoteConfigValue value = this.mRemoteConfig.getValue(key);
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, value.asBoolean());
 
       callbackContext.sendPluginResult(pluginResult);
     });
@@ -364,12 +369,8 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private void remoteConfigGetNumber(final String key, final CallbackContext callbackContext) {
     cordova.getThreadPool().execute(() -> {
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
-      FirebaseRemoteConfigValue value = mRemoteConfig.getValue(key);
-
-      if (value != null) {
-        pluginResult = new PluginResult(PluginResult.Status.OK, (float) value.asDouble());
-      }
+      FirebaseRemoteConfigValue value = this.mRemoteConfig.getValue(key);
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, (float) value.asDouble());
 
       callbackContext.sendPluginResult(pluginResult);
     });
@@ -377,12 +378,8 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private void remoteConfigGetString(final String key, final CallbackContext callbackContext) {
     cordova.getThreadPool().execute(() -> {
-      PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR);
-      FirebaseRemoteConfigValue value = mRemoteConfig.getValue(key);
-
-      if (value != null) {
-        pluginResult = new PluginResult(PluginResult.Status.OK, value.asString());
-      }
+      FirebaseRemoteConfigValue value = this.mRemoteConfig.getValue(key);
+      PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, value.asString());
 
       callbackContext.sendPluginResult(pluginResult);
     });
