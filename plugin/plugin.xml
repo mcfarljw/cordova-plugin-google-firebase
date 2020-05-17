@@ -21,8 +21,6 @@
 
   <platform name="android">
 
-    <preference name="APP_ID_ANDROID" default="ca-app-pub-3940256099942544~3347511713" />
-
     <config-file target="config.xml" parent="/*">
       <feature name="FirebasePlugin" >
         <param name="android-package" value="com.jernung.plugins.firebase.FirebasePlugin" />
@@ -35,13 +33,11 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$APP_ID_ANDROID" />
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </config-file>
 
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
 
-    <framework src="com.google.firebase:firebase-ads:19.1.0" />
     <framework src="com.google.firebase:firebase-analytics:17.4.1" />
     <framework src="com.google.firebase:firebase-config:19.1.4" />
     <framework src="com.google.firebase:firebase-crashlytics:17.0.0" />
@@ -56,22 +52,12 @@
 
   <platform name="ios">
 
-    <preference name="APP_ID_IOS" default="ca-app-pub-3940256099942544~1458002511" />
-
     <config-file target="config.xml" parent="/*">
 			<feature name="FirebasePlugin">
 				<param name="ios-package" value="FirebasePlugin" />
 				<param name="onload" value="true" />
 			</feature>
 		</config-file>
-
-    <config-file parent="GADApplicationIdentifier" target="*-Info.plist">
-        <string>$APP_ID_IOS</string>
-    </config-file>
-
-    <config-file parent="GADIsAdManagerApp" target="*-Info.plist">
-        <true />
-    </config-file>
 
     <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
 
@@ -82,7 +68,6 @@
       <pods>
         <pod name="Crashlytics" spec="~> 3.14.0" />
         <pod name="Fabric" spec="~> 1.10.2" />
-        <pod name="Firebase/AdMob" spec="~> 6.24.0" />
         <pod name="Firebase/Analytics" spec="~> 6.24.0" />
         <pod name="Firebase/Performance" spec="~> 6.24.0" />
         <pod name="Firebase/RemoteConfig" spec="~> 6.24.0" />
