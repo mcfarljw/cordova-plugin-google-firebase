@@ -1,50 +1,28 @@
-const filesystem = require('fs-extra')
-const xcode = require('xcode')
 
-module.exports = async function (context) {
-  const globals = require('../globals')(context)
-  const project = xcode.project(`${globals.IOS_XCODEPROJ}/project.pbxproj`)
+const fs = require("fs")
+const xcode = require("xcode")
+const helper = require("./helper")
 
-  project.parseSync()
+module.exports = function(context) {
+    const comment = helper.BUILD_PHASE_COMMENT
+    const xcodeProjectPath = helper.getXcodeProjectPath(context)
+    const xcodeProject = xcode.project(xcodeProjectPath)
 
-  async function setupCrashlytics () {
-    const key = project.generateUuid()
-    const comment = '\"Crashlytics\"'
-    const script =  '"' + '\\"${PODS_ROOT}/Fabric/run\\"'  + '"'
+    xcodeProject.parseSync()
 
-    project.hash.project.objects.PBXShellScriptBuildPhase[key] = {
-      isa: 'PBXShellScriptBuildPhase',
-      buildActionMask: 2147483647,
-      files: [],
-      inputFileListPaths: [],
-      inputPaths: [
-        '\"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\"'
-      ],
-      outputFileListPaths: [],
-      outputPaths: [],
-      runOnlyForDeploymentPostprocessing: 0,
-      shellPath: '/bin/sh',
-      shellScript: script
+    // Only add if not already there yet
+
+    const buildPhase = xcodeProject.pbxItemByComment(comment, "PBXShellScriptBuildPhase")
+
+    if (!buildPhase) {
+        const result = xcodeProject.addBuildPhase([], "PBXShellScriptBuildPhase", comment, null, {
+            shellPath: "/bin/sh",
+            shellScript: "\"${PODS_ROOT}/FirebaseCrashlytics/run\"",
+            inputPaths: ["\"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\""]
+        })
+
+        result.buildPhase.runOnlyForDeploymentPostprocessing = 1
+
+        fs.writeFileSync(xcodeProjectPath, xcodeProject.writeSync())
     }
-
-    project.hash.project.objects.PBXShellScriptBuildPhase[`${key}_comment`] = comment
-
-    for (let nativeTargetId in project.hash.project.objects.PBXNativeTarget) {
-
-      if (nativeTargetId.indexOf('_comment') !== -1) {
-        continue
-      }
-
-      let nativeTarget = project.hash.project.objects.PBXNativeTarget[nativeTargetId]
-
-      nativeTarget.buildPhases.push({
-        value: key,
-        comment: comment
-      })
-    }
-
-    filesystem.writeFileSync(`${globals.IOS_XCODEPROJ}/project.pbxproj`, project.writeSync());
-  }
-
-  await setupCrashlytics()
 }

@@ -2,8 +2,6 @@
 #import "Firebase.h"
 #import "AppDelegate.h"
 #import <Cordova/CDVPlugin.h>
-#import <Crashlytics/Crashlytics.h>
-#import <Fabric/Fabric.h>
 
 @implementation FirebasePlugin
 
