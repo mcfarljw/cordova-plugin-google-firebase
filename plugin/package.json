@@ -9,8 +9,8 @@
     "url": "https://github.com/mcfarljw/cordova-plugin-google-firebase/tree/master/plugin"
   },
   "engines": {
-    "node": ">=6.0.0",
-    "npm": ">=3.8.6"
+    "node": ">=10.21.0",
+    "npm": ">=6.14.0"
   },
   "keywords": [
     "cordova",
