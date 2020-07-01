@@ -18,7 +18,8 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-minSdkVersion" value="23" />
+        <preference name="AndroidXEnabled" value="true" />
         <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
     <platform name="ios">
