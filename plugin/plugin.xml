@@ -26,6 +26,9 @@
         <param name="android-package" value="com.jernung.plugins.firebase.FirebasePlugin" />
         <param name="onload" value="true" />
       </feature>
+
+      <preference name="GradlePluginGoogleServicesEnabled" value="true" />
+      <preference name="GradlePluginGoogleServicesVersion" value="4.3.3" />
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest">

@@ -8,14 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.0'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
-        classpath 'com.google.gms:google-services:4.3.3'
     }
 }
 
 apply plugin: com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsPlugin
-
-ext.postBuildExtras = {
-  if (project.extensions.findByName('googleServices') == null) {
-    apply plugin: com.google.gms.googleservices.GoogleServicesPlugin
-  }
-}
