@@ -12,6 +12,9 @@ emptyDirSync(`${root}/test/plugins`)
 // navigate to cordova directory
 shell.cd(`${root}/test`)
 
+// add plugins
+shell.exec('cordova plugin add cordova-plugin-ionic-webview@5.0.0')
+
 // add platforms
 shell.exec('cordova platform add android@9.0.0')
 shell.exec('cordova platform add ios@6.1.0')
