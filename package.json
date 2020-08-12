@@ -19,7 +19,7 @@
     "test:ios": "node scripts/test-ios"
   },
   "dependencies": {
-    "cordova": "^9.0.0",
+    "cordova": "^10.0.0",
     "fs-extra": "^9.0.1",
     "shelljs": "^0.8.4"
   }
