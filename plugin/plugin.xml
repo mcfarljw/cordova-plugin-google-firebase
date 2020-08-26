@@ -21,7 +21,7 @@
 
   <platform name="android">
 
-    <config-file target="config.xml" parent="/*">
+    <config-file target="res/xml/config.xml" parent="/*">
       <feature name="FirebasePlugin" >
         <param name="android-package" value="com.jernung.plugins.firebase.FirebasePlugin" />
         <param name="onload" value="true" />
@@ -42,9 +42,9 @@
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
     <hook type="before_plugin_uninstall" src="scripts/android/before_plugin_uninstall.js" />
 
-    <framework src="com.google.firebase:firebase-analytics:17.4.4" />
+    <framework src="com.google.firebase:firebase-analytics:17.5.0" />
     <framework src="com.google.firebase:firebase-config:19.2.0" />
-    <framework src="com.google.firebase:firebase-crashlytics:17.1.1" />
+    <framework src="com.google.firebase:firebase-crashlytics:17.2.1" />
     <framework src="com.google.firebase:firebase-perf:19.0.8" />
 
     <framework custom="true" src="build.gradle" type="gradleReference" />
