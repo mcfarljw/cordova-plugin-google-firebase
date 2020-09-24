@@ -39,7 +39,7 @@
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString* name = [command.arguments objectAtIndex:0];
 
-    [FIRAnalytics setScreenName:name screenClass:NULL];
+    [FIRAnalytics logEventWithName:kFIREventScreenView parameters:@{kFIRParameterScreenName: name}];
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
