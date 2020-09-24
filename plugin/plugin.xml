@@ -45,6 +45,7 @@
     <framework src="com.google.firebase:firebase-analytics:17.5.0" />
     <framework src="com.google.firebase:firebase-config:19.2.0" />
     <framework src="com.google.firebase:firebase-crashlytics:17.2.1" />
+    <framework src="com.google.firebase:firebase-dynamic-links:19.1.0" />
     <framework src="com.google.firebase:firebase-perf:19.0.8" />
 
     <framework custom="true" src="build.gradle" type="gradleReference" />
@@ -73,6 +74,7 @@
       <pods>
         <pod name="Firebase/Analytics" spec="~> 6.31.0" />
         <pod name="Firebase/Crashlytics" spec="~> 6.31.0" />
+        <pod name="Firebase/DynamicLinks" spec="~> 6.31.0" />
         <pod name="Firebase/Performance" spec="~> 6.31.0" />
         <pod name="Firebase/RemoteConfig" spec="~> 6.31.0" />
       </pods>
