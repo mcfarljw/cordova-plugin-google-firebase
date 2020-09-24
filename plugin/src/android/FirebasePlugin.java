@@ -122,12 +122,17 @@ public class FirebasePlugin extends CordovaPlugin {
 
       cordova.getThreadPool().execute(() -> this.mAnalytics.logEvent(name, paramBundle));
     } catch (Exception error) {
-      Log.e(PLUGIN_NAME, error.getMessage());
+      Log.e(PLUGIN_NAME, "Unable to log event!");
     }
   }
 
   private void analyticsSetScreenName(final String name) {
-    this.mAnalytics.setCurrentScreen(cordova.getActivity(), name, null);
+    Bundle bundle = new Bundle();
+
+    bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, name);
+    bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+
+    this.mAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
   }
 
   private void analyticsSetUserId(final String id) {
@@ -168,8 +173,6 @@ public class FirebasePlugin extends CordovaPlugin {
 
         pluginResult = new PluginResult(PluginResult.Status.OK, byteArray);
       } catch (JSONException error) {
-        Log.d(PLUGIN_NAME, error.getMessage());
-
         pluginResult = new PluginResult(PluginResult.Status.OK, new JSONArray());
       }
 
