@@ -72,11 +72,11 @@
         <source url="https://github.com/CocoaPods/Specs.git" />
       </config>
       <pods>
-        <pod name="Firebase/Analytics" spec="~> 6.31.0" />
-        <pod name="Firebase/Crashlytics" spec="~> 6.31.0" />
-        <pod name="Firebase/DynamicLinks" spec="~> 6.31.0" />
-        <pod name="Firebase/Performance" spec="~> 6.31.0" />
-        <pod name="Firebase/RemoteConfig" spec="~> 6.31.0" />
+        <pod name="Firebase/Analytics" spec="~> 6.33.0" />
+        <pod name="Firebase/Crashlytics" spec="~> 6.33.0" />
+        <pod name="Firebase/DynamicLinks" spec="~> 6.33.0" />
+        <pod name="Firebase/Performance" spec="~> 6.33.0" />
+        <pod name="Firebase/RemoteConfig" spec="~> 6.33.0" />
       </pods>
     </podspec>
 
