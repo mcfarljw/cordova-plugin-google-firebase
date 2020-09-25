@@ -32,6 +32,11 @@ module.exports = {
     }
   },
   crashlytics: {},
+  dynamicLinks: {
+    onData: function (callback) {
+      exec(callback, null, 'FirebasePlugin', 'dynamicLinksData', [])
+    }
+  },
   remoteConfig: {
     getArray: function (key) {
       return new Promise(

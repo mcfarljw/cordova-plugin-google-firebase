@@ -19,6 +19,10 @@
     <clobbers target="plugins.firebase" />
   </js-module>
 
+  <dependency id="cordova-plugin-add-swift-support" version="2.0.2" />
+
+  <preference name="DYNAMIC_LINK_DOMAIN" default="example.page.link" />
+
   <platform name="android">
 
     <config-file target="res/xml/config.xml" parent="/*">
@@ -37,6 +41,16 @@
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:host="$DYNAMIC_LINK_DOMAIN" android:scheme="http"/>
+        <data android:host="$DYNAMIC_LINK_DOMAIN" android:scheme="https"/>
+      </intent-filter>
     </config-file>
 
     <hook type="after_plugin_install" src="scripts/android/after_plugin_install.js" />
@@ -64,6 +78,18 @@
 			</feature>
 		</config-file>
 
+    <config-file target="*-Debug.plist" parent="com.apple.developer.associated-domains">
+      <array>
+        <string>applinks:$DYNAMIC_LINK_DOMAIN</string>
+      </array>
+    </config-file>
+
+    <config-file target="*-Release.plist" parent="com.apple.developer.associated-domains">
+      <array>
+        <string>applinks:$DYNAMIC_LINK_DOMAIN</string>
+      </array>
+    </config-file>
+
     <hook type="after_plugin_install" src="scripts/ios/after_plugin_install.js" />
     <hook type="before_plugin_uninstall" src="scripts/ios/before_plugin_uninstall.js" />
 
@@ -82,8 +108,7 @@
 
     <header-file src="src/ios/AppDelegate+FirebasePlugin.h" />
     <source-file src="src/ios/AppDelegate+FirebasePlugin.m" />
-    <header-file src="src/ios/FirebasePlugin.h" />
-		<source-file src="src/ios/FirebasePlugin.m" />
+    <source-file src="src/ios/FirebasePlugin.swift" />
 
   </platform>
 

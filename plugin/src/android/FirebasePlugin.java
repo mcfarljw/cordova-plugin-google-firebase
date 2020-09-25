@@ -1,11 +1,14 @@
 package com.jernung.plugins.firebase;
 
-import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
@@ -23,7 +26,6 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private static final String PLUGIN_NAME = "FirebasePlugin";
 
-  private Context applicationContext;
   private FirebaseAnalytics mAnalytics;
   private FirebaseCrashlytics mCrashlytics;
   private FirebaseRemoteConfig mRemoteConfig;
@@ -32,8 +34,7 @@ public class FirebasePlugin extends CordovaPlugin {
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
 
-    applicationContext = cordova.getActivity().getApplicationContext();
-    mAnalytics = FirebaseAnalytics.getInstance(applicationContext);
+    mAnalytics = FirebaseAnalytics.getInstance(cordova.getActivity().getApplicationContext());
     mCrashlytics = FirebaseCrashlytics.getInstance();
   }
 
@@ -69,6 +70,12 @@ public class FirebasePlugin extends CordovaPlugin {
       String value = args.getString(1);
 
       this.analyticsSetUserProperty(name, value);
+
+      return true;
+    }
+
+    if ("dynamicLinksData".equals(action)) {
+      this.dynamicLinksData(callbackContext);
 
       return true;
     }
@@ -141,6 +148,25 @@ public class FirebasePlugin extends CordovaPlugin {
 
   private void analyticsSetUserProperty(final String name, final String value) {
     this.mAnalytics.setUserProperty(name, value);
+  }
+
+  private void dynamicLinksData(CallbackContext callbackContext) {
+    FirebaseDynamicLinks.getInstance()
+      .getDynamicLink(cordova.getActivity().getIntent())
+      .addOnSuccessListener(cordova.getActivity(), pendingDynamicLinkData -> {
+        if (pendingDynamicLinkData == null) {
+          return;
+        }
+
+        Uri link = pendingDynamicLinkData.getLink();
+
+        if (link != null) {
+          PluginResult result = new PluginResult(PluginResult.Status.OK, link.toString());
+
+          result.setKeepCallback(true);
+          callbackContext.sendPluginResult(result);
+        }
+      });
   }
 
   private void remoteConfigSetup(final long interval, final CallbackContext callbackContext) {

@@ -1,5 +1,4 @@
 #import "AppDelegate+FirebasePlugin.h"
-#import "FirebasePlugin.h"
 #import "Firebase.h"
 #import <objc/runtime.h>
 
