@@ -15,6 +15,7 @@
   "devDependencies": {
     "cordova-android": "^9.0.0",
     "cordova-ios": "^6.1.0",
+    "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-google-firebase": "file:../plugin",
     "cordova-plugin-ionic-webview": "^5.0.0",
@@ -23,7 +24,9 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-google-firebase": {},
+      "cordova-plugin-google-firebase": {
+        "DYNAMIC_LINK_DOMAIN": "example.link.page"
+      },
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-device": {}
     },
